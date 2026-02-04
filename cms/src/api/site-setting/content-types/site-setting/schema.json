@@ -1,0 +1,37 @@
+{
+    "kind": "singleType",
+    "collectionName": "site_settings",
+    "info": {
+        "singularName": "site-setting",
+        "pluralName": "site-settings",
+        "displayName": "Site Setting",
+        "description": "Global site configuration"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "attributes": {
+        "siteName": {
+            "type": "string",
+            "required": true
+        },
+        "hotline": {
+            "type": "string"
+        },
+        "zaloLink": {
+            "type": "string"
+        },
+        "facebookLink": {
+            "type": "string"
+        },
+        "supportEmail": {
+            "type": "email"
+        },
+        "address": {
+            "type": "string"
+        },
+        "copyrightText": {
+            "type": "string"
+        }
+    }
+}

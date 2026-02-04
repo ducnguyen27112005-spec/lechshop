@@ -1,0 +1,46 @@
+{
+    "kind": "collectionType",
+    "collectionName": "customer_requests",
+    "info": {
+        "singularName": "customer-request",
+        "pluralName": "customer-requests",
+        "displayName": "Customer Request",
+        "description": "Purchase and consultation requests"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "attributes": {
+        "fullName": {
+            "type": "string",
+            "required": true
+        },
+        "contact": {
+            "type": "string",
+            "required": true
+        },
+        "serviceType": {
+            "type": "enumeration",
+            "enum": [
+                "premium",
+                "social"
+            ],
+            "required": true
+        },
+        "serviceName": {
+            "type": "string",
+            "required": true
+        },
+        "note": {
+            "type": "text"
+        },
+        "status": {
+            "type": "enumeration",
+            "enum": [
+                "new",
+                "done"
+            ],
+            "default": "new"
+        }
+    }
+}

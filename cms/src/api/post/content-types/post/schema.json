@@ -1,0 +1,44 @@
+{
+    "kind": "collectionType",
+    "collectionName": "posts",
+    "info": {
+        "singularName": "post",
+        "pluralName": "posts",
+        "displayName": "Post",
+        "description": "News and blog articles"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "slug": {
+            "type": "uid",
+            "targetField": "title",
+            "required": true
+        },
+        "excerpt": {
+            "type": "text"
+        },
+        "content": {
+            "type": "richtext"
+        },
+        "coverImage": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "publishedAt": {
+            "type": "datetime"
+        },
+        "isActive": {
+            "type": "boolean",
+            "default": true
+        }
+    }
+}

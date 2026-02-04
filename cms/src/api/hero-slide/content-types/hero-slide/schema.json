@@ -1,0 +1,46 @@
+{
+    "kind": "collectionType",
+    "collectionName": "hero_slides",
+    "info": {
+        "singularName": "hero-slide",
+        "pluralName": "hero-slides",
+        "displayName": "Hero Slide",
+        "description": "Homepage banner slides"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "subtitle": {
+            "type": "string"
+        },
+        "buttonText": {
+            "type": "string",
+            "default": "Xem chi tiết"
+        },
+        "buttonHref": {
+            "type": "string",
+            "default": "/#premium"
+        },
+        "bgImage": {
+            "type": "media",
+            "multiple": false,
+            "required": true,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "order": {
+            "type": "integer",
+            "default": 0
+        },
+        "isActive": {
+            "type": "boolean",
+            "default": true
+        }
+    }
+}
