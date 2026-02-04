@@ -1,0 +1,22 @@
+{
+    "name": "techcorp-website",
+    "version": "1.0.0",
+    "description": "TechCorp corporate website - Netflix & ChatGPT Plus services",
+    "private": true,
+    "scripts": {
+        "dev": "cd corporate-site && npm run dev",
+        "dev:3000": "cd corporate-site && npm run dev -- -p 3000",
+        "dev:3001": "cd corporate-site && npm run dev -- -p 3001",
+        "build": "cd corporate-site && npm run build",
+        "start": "cd corporate-site && npm start",
+        "lint": "cd corporate-site && npm run lint",
+        "postinstall": "cd corporate-site && npm install"
+    },
+    "keywords": [
+        "nextjs",
+        "corporate",
+        "website"
+    ],
+    "author": "TechCorp Services",
+    "license": "UNLICENSED"
+}
