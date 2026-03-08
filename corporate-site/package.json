@@ -1,38 +1,22 @@
 {
-  "name": "corporate-site",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev -p 3002",
-    "dev:auto": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.19.2",
-    "@types/bcryptjs": "^2.4.6",
-    "bcryptjs": "^3.0.3",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.563.0",
-    "next": "16.1.6",
-    "next-auth": "^4.24.13",
-    "prisma": "^6.19.2",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "tailwind-merge": "^3.4.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  },
-  "prisma": {
-    "seed": "npx tsx prisma/seed.ts"
-  }
+    "name": "techcorp-website",
+    "version": "1.0.0",
+    "description": "TechCorp corporate website - Netflix & ChatGPT Plus services",
+    "private": true,
+    "scripts": {
+        "dev": "cd corporate-site && npm run dev",
+        "dev:3000": "cd corporate-site && npm run dev -- -p 3000",
+        "dev:3001": "cd corporate-site && npm run dev -- -p 3001",
+        "build": "cd corporate-site && npm run build",
+        "start": "cd corporate-site && npm start",
+        "lint": "cd corporate-site && npm run lint",
+        "postinstall": "cd corporate-site && npm install"
+    },
+    "keywords": [
+        "nextjs",
+        "corporate",
+        "website"
+    ],
+    "author": "TechCorp Services",
+    "license": "UNLICENSED"
 }
