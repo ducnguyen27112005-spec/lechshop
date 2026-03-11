@@ -1,112 +1,59 @@
-# TechCorp Corporate Website
+# Strapi CMS - TechCorp Service
 
-A modern corporate website built with Next.js, TypeScript, and Tailwind CSS, showcasing Netflix renewal and ChatGPT Plus upgrade services.
+This is the Strapi backend for managing content for the TechCorp corporate website.
 
-## 🚀 Quick Start
+## Setup & Running
 
-### Prerequisites
-- Node.js 18+ and npm installed
-- Windows PowerShell or Command Prompt
-
-### Installation & Running
-
-1. **Navigate to the project directory:**
-   ```powershell
-   cd "D:\website 01\corporate-site"
-   ```
-
-2. **Install dependencies:**
-   ```powershell
+1. **Install dependencies** (if not already done):
+   ```bash
    npm install
    ```
 
-3. **Run the development server:**
-   ```powershell
-   npm run dev
+2. **Start the development server**:
+   ```bash
+   npm run develop
    ```
+   The admin panel will be available at: [http://localhost:1337/admin](http://localhost:1337/admin)
 
-4. **Open your browser:**
-   Navigate to **[http://localhost:3001](http://localhost:3001)**
+3. **Create Admin Account**:
+   On the first run, you will be prompted to create your administrator account.
 
-> **Note:** The dev server is configured to always run on port **3001**. If you need auto port selection, use `npm run dev:auto`.
+## Content Management
 
+### Content Types
+- **Site Settings** (Single Type): Global site configuration (hotline, social links, address).
+- **Hero Slides** (Collection): Manage the homepage banner slides.
+- **Premium Products** (Collection): Manage products like ChatGPT Plus, Netflix Premium.
+- **Social Services** (Collection): Manage social media growth services.
+- **Posts** (Collection): Manage news/blog articles.
+- **Customer Requests** (Collection): View and manage service requests from users.
 
-## 📁 Project Structure
+### Permissions
+To allow the Next.js frontend to read data, you MUST configure public permissions:
+1. Go to **Settings** > **Users & Permissions Plugin** > **Roles**.
+2. Click on the **Public** role.
+3. Under **Permissions**, find each content type and check:
+   - `find` and `findOne` for all except `customer-request`.
+   - For `customer-request`, check **ONLY** `create`.
+4. Click **Save**.
 
-```
-corporate-site/
-├── app/                    # Next.js App Router pages
-│   ├── gioi-thieu/        # About page
-│   ├── san-pham/          # Products listing & detail
-│   ├── bang-gia/          # Pricing page
-│   ├── huong-dan/         # Guides page
-│   ├── tin-tuc/           # News listing & detail
-│   ├── ho-tro/            # Support page
-│   ├── lien-he/           # Contact page
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   └── globals.css        # Global styles
-├── components/
-│   ├── layout/            # TopBar, Header, Footer, NavMenu
-│   ├── home/              # HeroSlider, FeaturedProducts, etc.
-│   └── shared/            # Reusable components
-├── content/               # Data files (site config, products, posts)
-├── lib/                   # Utilities and constants
-└── public/                # Static assets
-```
+## Data Seeding Guide (Manual)
 
-## 🛠️ Available Scripts
+### 1. Hero Slides
+Create 3 slides with background images:
+- Title: "Hỗ trợ đăng ký ChatGPT Plus", Button: "Xem chi tiết", Path: "/#premium"
+- Title: "Nâng cấp Netflix Premium", Button: "Khám phá ngay", Path: "/#premium"
+- Title: "Tăng trưởng Mạng xã hội", Button: "Bắt đầu ngay", Path: "/#dich-vu"
 
-- `npm run dev` - Start dev server on **port 3001**
-- `npm run dev:auto` - Start dev server (auto port selection)
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+### 2. Premium Products
+Create products like Netflix, ChatGPT, Youtube Premium.
+Add bullets for each:
+- `["Chính hãng 100%", "Bảo hành trọn đời", "Hỗ trợ 24/7"]`
 
-## ✨ Features
+### 3. Social Services
+Create services for TikTok, Facebook, Instagram.
+Add bullets for each:
+- `["Tương tác thật", "An toàn tài khoản", "Tốc độ nhanh"]`
 
-- **THACO-inspired corporate design** with professional layout
-- **Responsive design** - Mobile, tablet, and desktop friendly
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **Lucide React** icons
-- **SEO optimized** with proper meta tags
-- **Floating contact bar** with social media links
-- **Dynamic routing** for products and news articles
-
-## 📄 Pages
-
-- **Home** (`/`) - Hero slider, featured products, why choose us, news
-- **About** (`/gioi-thieu`) - Company information
-- **Products** (`/san-pham`) - Service listings
-- **Pricing** (`/bang-gia`) - Pricing tables
-- **Guides** (`/huong-dan`) - Step-by-step guides
-- **News** (`/tin-tuc`) - Blog articles
-- **Support** (`/ho-tro`) - FAQ and contact methods
-- **Contact** (`/lien-he`) - Contact form and information
-
-## 🎨 Design System
-
-- **Colors:** Blue primary (#2563eb), corporate white background
-- **Typography:** Geist Sans & Geist Mono fonts
-- **Spacing:** Consistent max-width containers (max-w-7xl)
-- **Components:** Card-based layouts with hover effects
-
-## 🔧 Troubleshooting
-
-### Port already in use
-```powershell
-# Find and kill the process using port 3000
-netstat -ano | findstr :3000
-taskkill /PID <process_id> /F
-```
-
-### Clear cache
-```powershell
-Remove-Item -Recurse -Force .next
-npm run dev
-```
-
-## 📝 License
-
-Proprietary - TechCorp Services © 2026
+### 4. Posts
+Add 3 test posts with titles, excerpts, and rich text content.
