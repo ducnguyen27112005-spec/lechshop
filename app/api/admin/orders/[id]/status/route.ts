@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { NormalizedStatus } from "@/lib/order-status";
 
 export async function PATCH(
-    request: Request,
+    request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = (await params).id;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: "Missing order ID" }, { status: 400 });
         }

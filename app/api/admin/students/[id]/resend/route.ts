@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 // import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { sendStudentDiscountEmail } from "@/lib/mail";
 
 export async function POST(
-    req: Request,
-    { params }: { params: { id: string } }
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = params.id;
+        const { id } = await params;
         if (!id) return NextResponse.json({ error: "Thiếu ID yêu cầu" }, { status: 400 });
 
         const studentRequest = await prisma.studentRequest.findUnique({

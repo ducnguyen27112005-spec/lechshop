@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { productPlans } from "@/content/productPlans";
 
 export async function GET(
-    req: Request,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
@@ -25,7 +25,7 @@ export async function GET(
 }
 
 export async function POST(
-    req: Request,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {

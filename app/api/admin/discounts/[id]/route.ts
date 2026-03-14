@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 // PUT: Update a discount code
 export async function PUT(
-    req: Request,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const session = await getServerSession(authOptions);
@@ -90,7 +90,7 @@ export async function PUT(
 
 // DELETE: Delete a discount code
 export async function DELETE(
-    req: Request,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const session = await getServerSession(authOptions);

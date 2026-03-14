@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Container from "@/components/shared/Container";
 import Link from "next/link";
 import { routes } from "@/lib/routes";
@@ -10,7 +11,7 @@ import { useBlogPosts } from "@/hooks/use-blog-posts";
 import { useSearchParams } from "next/navigation";
 import { Eye, Calendar, Star, Tag as TagIcon, Hash, ArrowRight } from "lucide-react";
 
-export default function NewsPage() {
+function NewsContent() {
     const allPosts = useBlogPosts();
     const searchParams = useSearchParams();
 
@@ -168,5 +169,13 @@ export default function NewsPage() {
 
             </Container >
         </div >
+    );
+}
+
+export default function NewsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center p-8"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>}>
+            <NewsContent />
+        </Suspense>
     );
 }
