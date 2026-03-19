@@ -1,0 +1,6 @@
+generated
+build_log
+tmp
+temp
+prisma/dev.db
+*.log
