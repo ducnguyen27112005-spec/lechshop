@@ -21,7 +21,19 @@ function ContactFormSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Contact Info */}
             <div className="space-y-6">
-
+                <Card className="p-6 hover:shadow-md transition-shadow">
+                    <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 flex-shrink-0">
+                            <MapPin className="h-6 w-6" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-bold text-gray-900 mb-1">Địa chỉ</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                <SiteInfo type="address" fallback={siteConfig.address} />
+                            </p>
+                        </div>
+                    </div>
+                </Card>
 
                 <Card className="p-6 hover:shadow-md transition-shadow">
                     <div className="flex items-start gap-4">

@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { products, premiumProducts, socialServices } from "@/content/products";
-import { services as servicesData } from "@/data/services";
 import { getProductsConfig, fetchProductsConfig, ProductConfig } from "@/lib/product-config";
 
 interface SearchResult {
@@ -29,35 +28,17 @@ export default function SearchBar({
     const [adminProducts, setAdminProducts] = useState<ProductConfig[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Load products from API
+    // Load admin products from server
     useEffect(() => {
-        const loadProducts = async () => {
-            try {
-                const { fetchThatimProducts } = await import("@/lib/api/thatim");
-                const apiData = await fetchThatimProducts();
-                
-                let apiProducts: ProductConfig[] = [];
-                if (apiData && apiData.length > 0) {
-                    apiProducts = apiData.map((item) => ({
-                        id: item.id.toString(),
-                        slug: item.slug,
-                        name: item.name,
-                        image: item.image?.startsWith('http') ? item.image : `https://thatim.vn${item.image}`,
-                        plans: item.time_data ? item.time_data.map((td) => ({ id: td.cycle_id?.toString() || '', label: '', durationMonths: td.cycle, price: td.price, originalPrice: td.price, discount: td.discount, description: td.note, inStock: td.is_active })) : [],
-                    })) as unknown as ProductConfig[];
-                }
-                
-                setAdminProducts(apiProducts as ProductConfig[]);
-            } catch (err) {
-                console.error("Search API sync error:", err);
-            }
+        const loadAdminProducts = () => {
+            const config = getProductsConfig();
+            setAdminProducts(config.products || []);
         };
-        
-        loadProducts();
-        
-        const handleUpdate = () => loadProducts();
-        window.addEventListener("products-config-updated", handleUpdate);
-        return () => window.removeEventListener("products-config-updated", handleUpdate);
+        fetchProductsConfig().then(loadAdminProducts);
+        window.addEventListener("products-config-updated", loadAdminProducts);
+        return () => {
+            window.removeEventListener("products-config-updated", loadAdminProducts);
+        };
     }, []);
 
     // Close dropdown when clicking outside
@@ -132,11 +113,11 @@ export default function SearchBar({
         });
 
         // Search in social services
-        servicesData.forEach((s) => {
+        socialServices.forEach((s) => {
             if (s.title.toLowerCase().includes(searchTerm)) {
                 found.push({
-                    id: s.slug,
-                    slug: s.slug,
+                    id: s.id,
+                    slug: s.id,
                     title: s.title,
                     type: "service",
                     image: s.image,
@@ -162,11 +143,6 @@ export default function SearchBar({
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => query.length >= 2 && setIsOpen(true)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' && results.length > 0) {
-                            window.location.href = `/san-pham/${results[0].slug}`;
-                        }
-                    }}
                     placeholder={placeholder}
                     className="w-full h-12 pl-5 pr-24 rounded-full bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md transition-shadow focus:shadow-lg"
                 />
@@ -181,11 +157,6 @@ export default function SearchBar({
                         </button>
                     )}
                     <button
-                        onClick={() => {
-                            if (results.length > 0) {
-                                window.location.href = `/san-pham/${results[0].slug}`;
-                            }
-                        }}
                         className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
                         aria-label="Search"
                     >

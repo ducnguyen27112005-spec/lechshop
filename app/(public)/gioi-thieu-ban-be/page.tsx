@@ -18,29 +18,13 @@ import {
     Inbox,
     Search,
     ChevronDown,
-    Check,
-    LogOut,
-    Lock
+    Check
 } from "lucide-react";
 
-import { useSiteConfig } from "@/hooks/use-site-config";
-
 export default function AffiliateDashboardPage() {
-    const config = useSiteConfig();
-    
-    // Auth State
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState<{ id: string; phone: string; fullName: string; referralCode: string } | null>(null);
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-    // Dashboard State
     const [activeTab, setActiveTab] = useState("chinh-sach");
     const [copied, setCopied] = useState(false);
-    const [referralLink, setReferralLink] = useState("");
+    const [referralLink, setReferralLink] = useState("https://lechshop.com/ref/39568");
 
     // Bank Dropdown State
     const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
@@ -105,63 +89,10 @@ export default function AffiliateDashboardPage() {
     }, []);
 
     useEffect(() => {
-        // Check local storage for existing session
-        const storedUser = localStorage.getItem("affiliateUser");
-        if (storedUser) {
-            try {
-                const parsedUser = JSON.parse(storedUser);
-                setUser(parsedUser);
-                setIsLoggedIn(true);
-                if (typeof window !== "undefined") {
-                    setReferralLink(`${window.location.origin}/ref/${parsedUser.referralCode}`);
-                }
-            } catch (e) {
-                localStorage.removeItem("affiliateUser");
-            }
+        if (typeof window !== "undefined") {
+            setReferralLink(`${window.location.origin}/ref/39568`);
         }
-        setIsCheckingAuth(false);
     }, []);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!phone || !password) {
-            setLoginError("Vui lòng nhập đầy đủ số điện thoại và mật khẩu.");
-            return;
-        }
-
-        setIsLoading(true);
-        setLoginError("");
-
-        try {
-            const res = await fetch("/api/affiliate/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ phone, password }),
-            });
-            const data = await res.json();
-
-            if (!res.ok) {
-                setLoginError(data.error || "Đăng nhập thất bại.");
-            } else {
-                localStorage.setItem("affiliateUser", JSON.stringify(data.user));
-                setUser(data.user);
-                setIsLoggedIn(true);
-                if (typeof window !== "undefined") {
-                    setReferralLink(`${window.location.origin}/ref/${data.user.referralCode}`);
-                }
-            }
-        } catch (error) {
-            setLoginError("Lỗi kết nối. Vui lòng thử lại.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem("affiliateUser");
-        setUser(null);
-        setIsLoggedIn(false);
-    };
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(referralLink);
@@ -169,110 +100,9 @@ export default function AffiliateDashboardPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    if (isCheckingAuth) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00b4d8]"></div>
-            </div>
-        );
-    }
-
-    if (!isLoggedIn) {
-        return (
-            <div className="min-h-screen bg-[#f0f7ff] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <div>
-                        <div className="mx-auto h-12 w-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                            <Lock className="w-6 h-6" />
-                        </div>
-                        <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
-                            Đăng nhập đối tác
-                        </h2>
-                        <p className="mt-2 text-center text-sm text-gray-600">
-                            Liên hệ Admin để được cấp tài khoản và mật khẩu
-                        </p>
-                    </div>
-                    <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-                        {loginError && (
-                            <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm text-center border border-red-100">
-                                {loginError}
-                            </div>
-                        )}
-                        <div className="space-y-4 rounded-md shadow-sm">
-                            <div>
-                                <label htmlFor="phone" className="sr-only">Số điện thoại</label>
-                                <input
-                                    id="phone"
-                                    name="phone"
-                                    type="text"
-                                    required
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] focus:z-10 sm:text-sm"
-                                    placeholder="Số điện thoại"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="password" className="sr-only">Mật khẩu</label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] focus:z-10 sm:text-sm"
-                                    placeholder="Mật khẩu"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#00b4d8] hover:bg-[#0096c7] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] disabled:opacity-70 transition-colors"
-                            >
-                                {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
-                            </button>
-                        </div>
-                        
-                        <div className="text-center mt-4">
-                            <p className="text-sm text-gray-500">
-                                Chưa có tài khoản?{" "}
-                                <a href={config.social.zalo} target="_blank" rel="noopener noreferrer" className="font-medium text-[#00b4d8] hover:underline">
-                                    Nhắn Zalo Admin
-                                </a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="py-12 bg-gray-50/50 min-h-screen">
             <Container>
-                {/* User Welcome & Logout */}
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-3 mb-4 sm:mb-0">
-                        <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
-                            {user?.fullName?.charAt(0) || user?.phone?.charAt(0) || "U"}
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Xin chào đối tác,</p>
-                            <p className="font-bold text-gray-900 text-lg">{user?.fullName || user?.phone}</p>
-                        </div>
-                    </div>
-                    <button 
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
-                    >
-                        <LogOut className="w-4 h-4" />
-                        Đăng xuất
-                    </button>
-                </div>
 
                 {/* Stats Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -316,28 +146,28 @@ export default function AffiliateDashboardPage() {
                     <div className="flex flex-wrap border-b border-gray-100">
                         <button
                             onClick={() => setActiveTab("chinh-sach")}
-                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'chinh-sach' ? 'text-[#00b4d8] border-b-2 border-[#00b4d8] bg-[#f0f7ff]' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'chinh-sach' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                         >
                             <BookOpen className="w-4 h-4" />
                             Chính sách
                         </button>
                         <button
                             onClick={() => setActiveTab("thong-ke")}
-                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'thong-ke' ? 'text-[#00b4d8] border-b-2 border-[#00b4d8] bg-[#f0f7ff]' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'thong-ke' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                         >
                             <BarChart3 className="w-4 h-4" />
                             Thống kê
                         </button>
                         <button
                             onClick={() => setActiveTab("lich-su")}
-                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'lich-su' ? 'text-[#00b4d8] border-b-2 border-[#00b4d8] bg-[#f0f7ff]' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'lich-su' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                         >
                             <History className="w-4 h-4" />
                             Lịch sử giới thiệu
                         </button>
                         <button
                             onClick={() => setActiveTab("rut-tien")}
-                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'rut-tien' ? 'text-[#00b4d8] border-b-2 border-[#00b4d8] bg-[#f0f7ff]' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'rut-tien' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/30' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                         >
                             <Landmark className="w-4 h-4" />
                             Rút tiền
@@ -357,7 +187,7 @@ export default function AffiliateDashboardPage() {
                                     <p>Bảng điều khiển minh bạch giúp theo dõi số lượt click, đơn hàng và tổng hoa hồng theo thời gian thực</p>
                                     <p>Thanh toán hoa hồng theo chính sách hiện hành của LECHSHOP với rút tối thiểu 50.000 VNĐ</p>
                                     <p>Tham gia ngay hôm nay để biến mạng lưới của bạn thành nguồn doanh thu bền vững!</p>
-                                    <p>Chia sẻ liên kết của bạn và bắt đầu nhận ưu đãi cho mỗi giao dịch từ người được bạn giới thiệu</p>
+                                    <p>Đăng ký liên kết tại LECHSHOP và bắt đầu nhận ưu đãi cho mỗi giao dịch từ người được bạn giới thiệu</p>
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-gray-900 mb-4">Liên kết giới thiệu của bạn</h3>
@@ -366,7 +196,7 @@ export default function AffiliateDashboardPage() {
                                     </p>
                                     <div className="flex border border-gray-200 rounded-md overflow-hidden bg-gray-50 w-full max-w-md mb-6 shadow-sm">
                                         <input type="text" readOnly value={referralLink} className="px-4 py-3 bg-transparent text-gray-700 text-sm flex-1 outline-none min-w-0" />
-                                        <button onClick={copyToClipboard} className="px-5 py-3 bg-[#00b4d8] hover:bg-[#0096c7] text-white transition-colors flex items-center justify-center min-w-[3rem]" title="Sao chép">
+                                        <button onClick={copyToClipboard} className="px-5 py-3 bg-[#5bc0de] hover:bg-[#46b8da] text-white transition-colors flex items-center justify-center min-w-[3rem]" title="Sao chép">
                                             <Copy className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -477,7 +307,7 @@ export default function AffiliateDashboardPage() {
                                     <div className="space-y-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Số Tiền Rút</label>
-                                            <input type="text" placeholder="Nhập số tiền muốn rút..." className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] transition-all" />
+                                            <input type="text" placeholder="Nhập số tiền muốn rút..." className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
                                         </div>
                                         <div className="relative" ref={dropdownRef}>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Ngân Hàng</label>
@@ -515,7 +345,7 @@ export default function AffiliateDashboardPage() {
                                                                         setIsBankDropdownOpen(false);
                                                                         setSearchBankTerm("");
                                                                     }}
-                                                                    className={`px-3 py-2.5 text-sm rounded-sm cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors ${selectedBank === bank.value ? 'bg-blue-50 text-[#00b4d8] font-medium' : 'text-gray-700'}`}
+                                                                    className={`px-3 py-2.5 text-sm rounded-sm cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors ${selectedBank === bank.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}`}
                                                                 >
                                                                     {bank.label}
                                                                     {selectedBank === bank.value && <Check className="w-4 h-4" />}
@@ -533,14 +363,14 @@ export default function AffiliateDashboardPage() {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Số Tài Khoản</label>
-                                                <input type="text" placeholder="Nhập số tài khoản" className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] transition-all" />
+                                                <input type="text" placeholder="Nhập số tài khoản" className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Chủ Tài Khoản</label>
-                                                <input type="text" placeholder="Nhập tên chủ tài khoản" className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] transition-all" />
+                                                <input type="text" placeholder="Nhập tên chủ tài khoản" className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
                                             </div>
                                         </div>
-                                        <button className="w-full py-3 mt-2 bg-[#00b4d8] hover:bg-[#0096c7] text-white font-medium rounded-md transition-colors">
+                                        <button className="w-full py-3 mt-2 bg-[#5bc0de] hover:bg-[#46b8da] text-white font-medium rounded-md transition-colors">
                                             Rút Tiền Ngay
                                         </button>
                                     </div>

@@ -13,53 +13,11 @@ export default function FloatingContactBar() {
 
     if (!mounted) return null;
 
-    const getMessengerLink = (url: string) => {
-        if (!url) return "#";
-        if (url.includes("m.me")) return url;
-        if (url.includes("messages/t/")) return url;
-        
-        let processedUrl = url.trim();
-        
-        // Add https if missing but contains facebook.com
-        if (processedUrl.includes("facebook.com") && !processedUrl.startsWith("http")) {
-            processedUrl = "https://" + processedUrl;
-        }
-
-        const isMobile = typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
-        const baseUrl = isMobile ? "https://m.me/" : "https://www.facebook.com/messages/t/";
-
-        try {
-            const urlObj = new URL(processedUrl);
-            if (urlObj.hostname.includes("facebook.com")) {
-                if (urlObj.searchParams.has("id")) {
-                    return `${baseUrl}${urlObj.searchParams.get("id")}`;
-                }
-                const pathParts = urlObj.pathname.split("/").filter(Boolean);
-                if (pathParts.length > 0) {
-                    let id = pathParts[0];
-                    if (id === "profile.php" && urlObj.searchParams.has("id")) {
-                        id = urlObj.searchParams.get("id")!;
-                    }
-                    return `${baseUrl}${id}`;
-                }
-            }
-        } catch (e) {
-            // Ignore URL parsing errors
-        }
-        
-        // If it's just a username/ID without http
-        if (!processedUrl.startsWith("http")) {
-            return `${baseUrl}${processedUrl}`;
-        }
-        
-        return processedUrl;
-    };
-
     return (
         <div className="fixed right-4 bottom-8 z-50 flex flex-col gap-6">
             {/* Messenger Button */}
             <a
-                href={getMessengerLink(config.social.facebook)}
+                href={config.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center justify-center w-11 h-11 rounded-full bg-blue-500 text-white shadow-xl transition-transform hover:scale-110 animate-wiggle"

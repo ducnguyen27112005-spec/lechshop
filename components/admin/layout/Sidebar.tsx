@@ -26,8 +26,7 @@ import {
     BadgeDollarSign,
     Wallet,
     Database,
-    GraduationCap,
-    DollarSign
+    GraduationCap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -131,7 +130,6 @@ const topMenuItems = [
     { label: "Đơn hàng Social", href: "/admin/social/orders", icon: Users2 },
     { label: "Kho tài khoản", href: "/admin/inventory", icon: Database },
     { label: "Quản lý sản phẩm", href: "/admin/products", icon: Box },
-    { label: "Quản lý giá đồng loạt", href: "/admin/prices", icon: DollarSign },
 ];
 
 const bottomMenuItems = [
@@ -139,7 +137,9 @@ const bottomMenuItems = [
     { label: "Quản lý Banner", href: "/admin/banners", icon: Package },
     { label: "Quản lý mã giảm giá", href: "/admin/discounts", icon: Ticket },
     { label: "Tính năng Sinh viên", href: "/admin/students", icon: GraduationCap },
-    { label: "Kho hình ảnh (Upload)", href: "/admin/media", icon: ImagePlus },
+    { label: "Bài viết và tin tức", href: "/admin/posts", icon: FileText },
+    { label: "Quản lý bình luận", href: "/admin/comments", icon: MessageSquare },
+    { label: "Câu hỏi thường gặp", href: "/admin/faq", icon: HelpCircle },
 ];
 
 function MenuItem({ item, pathname }: { item: { label: string; href: string; icon: any }; pathname: string }) {
@@ -272,8 +272,7 @@ function AffiliateSection({ pathname }: { pathname: string }) {
 
     const links = [
         { label: "Tổng quan", href: "/admin/affiliate", icon: BarChart3 },
-        { label: "Tài khoản đối tác", href: "/admin/affiliate/accounts", icon: Users },
-        { label: "Cộng tác viên", href: "/admin/affiliate/referrers", icon: Share2 },
+        { label: "Cộng tác viên", href: "/admin/affiliate/referrers", icon: Users },
         { label: "Hoa hồng", href: "/admin/affiliate/commissions", icon: BadgeDollarSign },
         { label: "Rút tiền", href: "/admin/affiliate/withdraws", icon: Wallet },
         { label: "Cài đặt", href: "/admin/affiliate/settings", icon: Settings },

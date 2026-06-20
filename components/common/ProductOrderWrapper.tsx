@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getPlansForProductConfig, PlanConfig, fetchProductsConfig, fetchPriceMultipliers } from "@/lib/product-config";
+import { getPlansForProductConfig, PlanConfig, fetchProductsConfig } from "@/lib/product-config";
 import { Plan, getPlansForProduct } from "@/content/productPlans";
 import ProductOrderSection from "./ProductOrderSection";
 
@@ -10,12 +10,6 @@ interface Props {
     productSlug: string;
     serviceType: "premium" | "social";
     imageUrl?: string;
-    apiPlans?: {
-        id: string;
-        label: string;
-        price: number;
-        originalPrice?: number;
-    }[];
 }
 
 export default function ProductOrderWrapper({
@@ -23,35 +17,22 @@ export default function ProductOrderWrapper({
     productSlug,
     serviceType,
     imageUrl,
-    apiPlans,
 }: Props) {
     const [plans, setPlans] = useState<(Plan & { inStock?: boolean })[]>([]);
 
     useEffect(() => {
         // Fetch from server first, then load plans
-        Promise.all([fetchProductsConfig(), fetchPriceMultipliers()]).then(() => {
-            if (apiPlans && apiPlans.length > 0) {
-                setPlans(apiPlans.map(p => ({
-                    ...p,
-                    durationMonths: 1, // Giá trị mặc định
-                    inStock: true
-                })));
+        fetchProductsConfig().then(() => {
+            const configPlans = getPlansForProductConfig(productSlug);
+            if (configPlans.length > 0) {
+                setPlans(configPlans);
             } else {
-                const configPlans = getPlansForProductConfig(productSlug, true);
-                if (configPlans.length > 0) {
-                    setPlans(configPlans);
-                } else {
-                    setPlans(getPlansForProduct(productSlug, 0));
-                }
+                setPlans(getPlansForProduct(productSlug, 0));
             }
         });
 
         const handleUpdate = () => {
-            if (apiPlans && apiPlans.length > 0) {
-                // Keep API plans
-                return;
-            }
-            const updated = getPlansForProductConfig(productSlug, true);
+            const updated = getPlansForProductConfig(productSlug);
             if (updated.length > 0) {
                 setPlans(updated);
             }

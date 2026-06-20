@@ -11,20 +11,18 @@ import { useCart } from "@/contexts/CartContext";
 import MegaMenu from "./MegaMenu";
 import MobileSubMenu from "./MobileSubMenu";
 import { useSiteConfig } from "@/hooks/use-site-config";
-import { useNavigationProducts } from "./useNavigationProducts";
-import { categoryMap } from "@/lib/categories";
+
 
 export default function Header() {
     const { totalItems } = useCart();
     const config = useSiteConfig();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const categorizedProducts = useNavigationProducts();
 
     return (
         <header
             className="text-white relative"
             style={{
-                backgroundColor: '#00b4d8',
+                backgroundColor: '#8A1E1C',
                 // boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
             }}
         >
@@ -40,12 +38,12 @@ export default function Header() {
                         {/* Logo - Smaller on mobile */}
                         <Link href={routes.home} className="flex items-center">
                             <Image
-                                src="/images/lechshop-logo-updated.png"
+                                src="/images/lechshop-logo-final.png"
                                 alt="LECHSHOP Logo"
-                                width={200}
-                                height={36}
+                                width={180}
+                                height={32}
                                 priority
-                                className="h-10 sm:h-12 w-auto"
+                                className="h-8 sm:h-10 w-auto"
                             />
                         </Link>
 
@@ -92,7 +90,7 @@ export default function Header() {
                             <div className="p-4 flex items-center justify-between border-b border-gray-100">
                                 <Link href={routes.home} onClick={() => setIsMobileMenuOpen(false)}>
                                     <Image
-                                        src="/images/lechshop-logo-updated.png"
+                                        src="/images/lechshop-blue-white.png"
                                         alt="LECHSHOP"
                                         width={160}
                                         height={45}
@@ -137,20 +135,35 @@ export default function Header() {
                                                     href="/#premium"
                                                 >
                                                     <div className="bg-white py-1">
-                                                        {Object.entries(categoryMap).filter(([slug]) => slug !== "mxh" && slug !== "dich-vu-ban-chay").map(([slug, data]) => {
-                                                            const products = categorizedProducts[slug] || [];
-                                                            if (products.length === 0) return null;
-                                                            return (
-                                                                <div key={slug} className="px-5 py-3 border-b border-gray-50 last:border-0">
-                                                                    <Link href={`/danh-muc/${slug}`} onClick={() => setIsMobileMenuOpen(false)} className="block text-[10px] font-extrabold text-gray-400 mb-3 uppercase tracking-[0.1em]">{data.title}</Link>
-                                                                    <div className="space-y-4">
-                                                                        {products.map(p => (
-                                                                            <Link key={p.slug} href={`/san-pham/${p.slug}`} onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide uppercase">{p.name}</Link>
-                                                                        ))}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                        {/* Tài khoản AI */}
+                                                        <div className="px-5 py-3 border-b border-gray-50 last:border-0">
+                                                            <Link href="/danh-muc/cong-cu-ai" onClick={() => setIsMobileMenuOpen(false)} className="block text-[10px] font-extrabold text-gray-400 mb-3 uppercase tracking-[0.1em]">Tài khoản AI</Link>
+                                                            <div className="space-y-4">
+                                                                <Link href="/san-pham/chatgpt-plus" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">CHATGPT PLUS</Link>
+                                                                <Link href="/san-pham/gemini-pro" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">GEMINI PRO</Link>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Giải trí */}
+                                                        <div className="px-5 py-3 border-b border-gray-50 last:border-0">
+                                                            <Link href="/danh-muc/giai-tri" onClick={() => setIsMobileMenuOpen(false)} className="block text-[10px] font-extrabold text-gray-400 mb-3 uppercase tracking-[0.1em] flex items-center justify-between">
+                                                                GIẢI TRÍ
+                                                                <span className="text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded font-bold">PHỔ BIẾN</span>
+                                                            </Link>
+                                                            <div className="space-y-4">
+                                                                <Link href="/san-pham/youtube-premium" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">YOUTUBE PREMIUM</Link>
+                                                                <Link href="/san-pham/netflix-premium" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">NETFLIX PREMIUM</Link>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Thiết kế */}
+                                                        <div className="px-5 py-3 border-b border-gray-50 last:border-0">
+                                                            <Link href="/danh-muc/sang-tao-noi-dung" onClick={() => setIsMobileMenuOpen(false)} className="block text-[10px] font-extrabold text-gray-400 mb-3 uppercase tracking-[0.1em]">THIẾT KẾ & ĐỒ HỌA</Link>
+                                                            <div className="space-y-4">
+                                                                <Link href="/san-pham/canva-pro" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">CANVA PRO</Link>
+                                                                <Link href="/san-pham/capcut-pro" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">CAPCUT PRO</Link>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </MobileSubMenu>
                                             </div>
@@ -165,9 +178,16 @@ export default function Header() {
                                                     <div className="bg-white py-1">
                                                         <div className="px-5 py-3">
                                                             <div className="space-y-4">
-                                                                {(categorizedProducts["mxh"] || []).map(p => (
-                                                                    <Link key={p.slug} href={`/san-pham/${p.slug}`} onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide uppercase">{p.name}</Link>
-                                                                ))}
+                                                                <Link href="/san-pham/tiktok" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">TIKTOK</Link>
+                                                                <Link href="/san-pham/facebook" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">FACEBOOK</Link>
+                                                                <Link href="/san-pham/instagram" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">INSTAGRAM</Link>
+                                                                <Link href="/san-pham/youtube" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">YOUTUBE</Link>
+                                                                <Link href="/san-pham/threads" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">THREADS</Link>
+                                                                <Link href="/san-pham/twitter" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">TWITTER (X)</Link>
+                                                                <Link href="/san-pham/shopee" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">SHOPEE</Link>
+                                                                <Link href="/san-pham/spotify" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">SPOTIFY</Link>
+                                                                <Link href="/san-pham/website-traffic" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">WEBSITE TRAFFIC</Link>
+                                                                <Link href="/san-pham/google-maps" onClick={() => setIsMobileMenuOpen(false)} className="block pl-3 text-sm font-semibold text-gray-700 border-l-2 border-gray-100 hover:border-red-500 hover:text-red-600 transition-colors tracking-wide">GOOGLE MAPS</Link>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -185,11 +205,11 @@ export default function Header() {
                                     </Link>
 
                                     <Link
-                                        href="/tra-cuu-don-hang"
+                                        href={routes.news}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                         className="px-5 py-4 border-b border-gray-50 hover:text-red-600 hover:bg-gray-50"
                                     >
-                                        Tra cứu đơn hàng
+                                        Blog <span className="ml-2 text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold normal-case">NEW</span>
                                     </Link>
 
                                     <Link
@@ -252,14 +272,14 @@ export default function Header() {
                 <div className="desktop-header-section hidden lg:flex items-center justify-between gap-6">
                     {/* Left Spacer - Takes up space to center search */}
                     <div className="flex-1 flex justify-start">
-                        <Link href={routes.home} className="flex items-center ml-4">
+                        <Link href={routes.home} className="flex items-center">
                             <Image
-                                src="/images/lechshop-logo-updated.png"
+                                src="/images/lechshop-logo-final.png"
                                 alt="LECHSHOP Logo"
-                                width={230}
-                                height={42}
+                                width={200}
+                                height={36}
                                 priority
-                                className="h-11 w-auto"
+                                className="h-9 w-auto"
                             />
                         </Link>
                     </div>
@@ -317,8 +337,8 @@ export default function Header() {
                         <Link href="/huong-dan" className="hover:text-gray-200 transition-colors whitespace-nowrap">
                             Hướng dẫn mua hàng
                         </Link>
-                        <Link href="/tra-cuu-don-hang" className="hover:text-gray-200 transition-colors whitespace-nowrap">
-                            Tra cứu đơn hàng
+                        <Link href={routes.news} className="hover:text-gray-200 transition-colors whitespace-nowrap">
+                            Blog
                         </Link>
                         {/* Hợp Tác Dropdown */}
                         <div className="relative group/hoptac h-full flex items-center">

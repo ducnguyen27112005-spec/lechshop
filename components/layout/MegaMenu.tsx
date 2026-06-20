@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Bot, Gamepad2, Palette, ThumbsUp, Briefcase, GraduationCap, TrendingUp, Shield } from "lucide-react";
-import { useNavigationProducts } from "./useNavigationProducts";
-
+import { getProductsConfig, fetchProductsConfig, ProductConfig } from "@/lib/product-config";
+import { categoryMap } from "@/lib/categories";
+import { services as externalServices } from "@/data/services";
 // Category display config with icons & colors
 const CATEGORY_DISPLAY: Record<string, {
     title: string;
@@ -96,10 +97,82 @@ const CATEGORY_DISPLAY: Record<string, {
     },
 };
 
+interface MenuProduct {
+    slug: string;
+    name: string;
+}
+
 export default function MegaMenu() {
     const [isOpen, setIsOpen] = useState(false);
-    const categorizedProducts = useNavigationProducts();
+    const [categorizedProducts, setCategorizedProducts] = useState<Record<string, MenuProduct[]>>({});
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        const load = () => {
+            const config = getProductsConfig();
+            const adminProducts = config.products || [];
+
+            const result: Record<string, MenuProduct[]> = {};
+
+            const adminBySlug = new Map<string, ProductConfig>();
+            adminProducts.forEach(p => adminBySlug.set(p.slug, p));
+
+            for (const [catSlug, catData] of Object.entries(categoryMap)) {
+                if (catSlug === "dich-vu-ban-chay") continue;
+                if (!result[catSlug]) result[catSlug] = [];
+
+                const seen = new Set<string>();
+                for (const productId of catData.productIds) {
+                    seen.add(productId);
+                    const adminProduct = adminBySlug.get(productId);
+
+                    let displayName = formatProductName(productId);
+                    if (adminProduct) {
+                        displayName = adminProduct.name;
+                    } else if (catSlug === "mxh") {
+                        // Attempt to find actual service name from data/services.ts based on slug parts
+                        // For example: "tiktok-followers" -> "tiktok"
+                        const baseServiceSlug = productId.split('-')[0];
+                        const matchedExtService = externalServices.find(s => s.slug === baseServiceSlug || s.slug === productId);
+                        if (matchedExtService) {
+                            // If base matched, check if we need to refine. For simplicity, just use the `title`.
+                            // However, we want "Tăng follow TikTok" not just "Dịch vụ TikTok".
+                            // It's mostly correct, e.g. instagram -> "Tăng Follow Instagram"
+                            displayName = matchedExtService.title;
+                        }
+                    }
+
+                    result[catSlug].push({ slug: productId, name: displayName });
+                }
+
+                adminProducts.forEach(p => {
+                    if (p.category === catSlug && !seen.has(p.slug)) {
+                        result[catSlug].push({ slug: p.slug, name: p.name });
+                    }
+                });
+            }
+
+            adminProducts.forEach(p => {
+                if (p.category && !result[p.category]) {
+                    result[p.category] = [];
+                }
+                if (p.category && !categoryMap[p.category]) {
+                    const existing = result[p.category] || [];
+                    if (!existing.find(x => x.slug === p.slug)) {
+                        existing.push({ slug: p.slug, name: p.name });
+                        result[p.category] = existing;
+                    }
+                }
+            });
+
+            setCategorizedProducts(result);
+        };
+        fetchProductsConfig().then(load);
+        window.addEventListener("products-config-updated", load);
+        return () => {
+            window.removeEventListener("products-config-updated", load);
+        };
+    }, []);
 
     const handleMouseEnter = () => {
         if (closeTimeoutRef.current) {

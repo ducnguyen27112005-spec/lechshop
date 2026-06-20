@@ -16,7 +16,7 @@ export interface CustomerRequestPayload {
 
 export async function createCustomerRequest(payload: CustomerRequestPayload) {
     try {
-        const response = await fetch(`/api/customer-requests`, {
+        const response = await fetch(`${STRAPI_URL}/api/customer-requests`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

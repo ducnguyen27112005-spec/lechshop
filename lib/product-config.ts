@@ -65,13 +65,10 @@ export const defaultProductsConfig: ProductsConfig = {
 // --- In-memory cache for client-side ---
 let _cachedConfig: ProductsConfig | null = null;
 let _fetchPromise: Promise<ProductsConfig> | null = null;
-let _multipliers: Record<string, number> | null = null; // productModifiers keyed by slug
-let _multipliersFetchDone = false;
 
 /**
  * Fetch products config from API (client-side).
  * Uses in-memory cache to avoid repeated fetches.
- * NOTE: Does NOT apply multipliers - use getProductsConfig(true) after fetching multipliers separately.
  */
 export async function fetchProductsConfig(): Promise<ProductsConfig> {
     if (_cachedConfig) return _cachedConfig;
@@ -83,13 +80,13 @@ export async function fetchProductsConfig(): Promise<ProductsConfig> {
             return res.json();
         })
         .then((data: ProductsConfig) => {
-            if (data && data.products && data.products.length > 0) {
+            if (data.products && data.products.length > 0) {
                 _cachedConfig = data;
             } else {
                 _cachedConfig = defaultProductsConfig;
             }
             _fetchPromise = null;
-            return _cachedConfig!;
+            return _cachedConfig;
         })
         .catch(() => {
             _fetchPromise = null;
@@ -98,24 +95,6 @@ export async function fetchProductsConfig(): Promise<ProductsConfig> {
         });
 
     return _fetchPromise;
-}
-
-/**
- * Fetch the product price multipliers from admin API (client-side).
- * Call this on public/storefront pages before rendering prices.
- */
-export async function fetchPriceMultipliers(): Promise<void> {
-    if (_multipliersFetchDone) return;
-    try {
-        const res = await fetch("/api/admin/prices/update-multipliers", { cache: "no-store" });
-        if (res.ok) {
-            const data = await res.json();
-            _multipliers = data.productModifiers || {};
-        }
-    } catch {
-        // keep null, multipliers won't be applied
-    }
-    _multipliersFetchDone = true;
 }
 
 /**
@@ -146,8 +125,6 @@ export async function saveProductsConfigToServer(config: ProductsConfig): Promis
 export function invalidateProductsCache(): void {
     _cachedConfig = null;
     _fetchPromise = null;
-    _multipliers = null;
-    _multipliersFetchDone = false;
 }
 
 // --- Synchronous getters (use cached data, fallback to defaults) ---
@@ -155,27 +132,9 @@ export function invalidateProductsCache(): void {
 /**
  * Get products config synchronously (from cache or defaults).
  * Components should call fetchProductsConfig() in useEffect first.
- * @param applyMultipliers - if true, applies productModifiers from admin config
  */
-export function getProductsConfig(applyMultipliers = false): ProductsConfig {
-    const baseConfig = _cachedConfig || defaultProductsConfig;
-
-    if (!applyMultipliers || !_multipliers || Object.keys(_multipliers).length === 0) {
-        return baseConfig;
-    }
-
-    const cloned = JSON.parse(JSON.stringify(baseConfig)) as ProductsConfig;
-    cloned.products.forEach(p => {
-        // Lookup by slug (id === slug in all current products)
-        const pct = Number(_multipliers![p.slug] ?? _multipliers![p.id] ?? 0);
-        if (pct !== 0) {
-            const mult = 1 + pct / 100;
-            p.plans.forEach(plan => {
-                plan.price = Math.round(plan.price * mult);
-            });
-        }
-    });
-    return cloned;
+export function getProductsConfig(): ProductsConfig {
+    return _cachedConfig || defaultProductsConfig;
 }
 
 /**
@@ -191,14 +150,14 @@ export function saveProductsConfig(config: ProductsConfig): void {
 // --- Helpers ---
 
 /** Get config for a single product by slug */
-export function getProductBySlug(slug: string, applyMultipliers = false): ProductConfig | undefined {
-    const config = getProductsConfig(applyMultipliers);
+export function getProductBySlug(slug: string): ProductConfig | undefined {
+    const config = getProductsConfig();
     return config.products.find((p) => p.slug === slug);
 }
 
 /** Get plans for a product (with inStock status) */
-export function getPlansForProductConfig(slug: string, applyMultipliers = false): PlanConfig[] {
-    const product = getProductBySlug(slug, applyMultipliers);
+export function getPlansForProductConfig(slug: string): PlanConfig[] {
+    const product = getProductBySlug(slug);
     if (!product) return [];
     return product.plans;
 }

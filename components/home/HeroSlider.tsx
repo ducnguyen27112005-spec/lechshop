@@ -38,7 +38,7 @@ export default function HeroSlider() {
     if (slides.length === 0) return null;
 
     return (
-        <div className="relative w-full aspect-[1456/816] rounded-xl overflow-hidden bg-gray-200 shadow-sm ring-1 ring-black/5">
+        <div className="relative w-full h-full min-h-[250px] md:min-h-[320px] lg:min-h-[370px] rounded-xl overflow-hidden bg-gray-200 shadow-sm ring-1 ring-black/5">
             {/* Slides */}
             <div className="absolute inset-0">
                 {slides.map((slide, index) => (
@@ -59,7 +59,7 @@ export default function HeroSlider() {
                         ) : (
                             <div
                                 className="absolute inset-0 bg-cover bg-center"
-                                style={{ backgroundImage: `url('${slide.image}')` }}
+                                style={{ backgroundImage: `url(${slide.image})` }}
                             />
                         )}
 

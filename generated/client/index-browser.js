@@ -21,11 +21,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.3
+ * Prisma Client JS version: 6.19.2
  * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.3",
+  client: "6.19.2",
   engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
@@ -404,17 +404,6 @@ exports.Prisma.ReferralCodeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.AffiliateUserScalarFieldEnum = {
-  id: 'id',
-  phone: 'phone',
-  password: 'password',
-  fullName: 'fullName',
-  referralCode: 'referralCode',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.ReferralClickScalarFieldEnum = {
   id: 'id',
   codeId: 'codeId',
@@ -633,7 +622,6 @@ exports.Prisma.ModelName = {
   DiscountCode: 'DiscountCode',
   CouponUsageLog: 'CouponUsageLog',
   ReferralCode: 'ReferralCode',
-  AffiliateUser: 'AffiliateUser',
   ReferralClick: 'ReferralClick',
   ReferralAttribution: 'ReferralAttribution',
   Commission: 'Commission',

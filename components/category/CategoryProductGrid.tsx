@@ -6,7 +6,6 @@ import { Lock, ShoppingCart } from "lucide-react";
 import DynamicPrice from "@/components/common/DynamicPrice";
 import { getProductsConfig, fetchProductsConfig, ProductConfig } from "@/lib/product-config";
 import { routes } from "@/lib/routes";
-import { getDeterministicSoldCount } from "@/lib/utils";
 
 interface Product {
     id: string;
@@ -25,7 +24,32 @@ interface CategoryProductGridProps {
 }
 
 export default function CategoryProductGrid({ products: initialProducts, categorySlug }: CategoryProductGridProps) {
-    const displayProducts = initialProducts;
+    const [displayProducts, setDisplayProducts] = useState(initialProducts);
+
+    useEffect(() => {
+        fetchProductsConfig().then(() => {
+            const localConfig = getProductsConfig();
+
+            const localProducts = localConfig.products.map((p: ProductConfig) => ({
+                id: p.id || p.slug,
+                slug: p.slug,
+                name: p.name,
+                image: p.image,
+                isSocial: false,
+                pricing: [],
+                category: p.category,
+            }));
+
+            const relevantLocalProducts = localProducts.filter(p => p.category === categorySlug);
+
+            const initialSlugs = new Set(initialProducts.map(p => p.slug));
+            const newProducts = relevantLocalProducts.filter(p => !initialSlugs.has(p.slug));
+
+            if (newProducts.length > 0) {
+                setDisplayProducts([...initialProducts, ...newProducts]);
+            }
+        });
+    }, [categorySlug, initialProducts]);
 
     if (displayProducts.length === 0) {
         return (
@@ -76,8 +100,8 @@ export default function CategoryProductGrid({ products: initialProducts, categor
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={product.image || "/images/social-service.jpg"}
-                                        alt={product.title || product.name}
-                                        title={product.title || product.name}
+                                        alt={product.name}
+                                        title={product.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                     />
@@ -90,7 +114,7 @@ export default function CategoryProductGrid({ products: initialProducts, categor
                                     </p>
 
                                     <h3 className="font-bold text-gray-900 text-sm lg:text-base mb-2 line-clamp-1 leading-snug">
-                                        {product.title || product.name}
+                                        {product.name}
                                     </h3>
 
                                     {/* Price / Contact */}
@@ -100,13 +124,13 @@ export default function CategoryProductGrid({ products: initialProducts, categor
                                                 Liên hệ
                                             </p>
                                             <p className="text-[10px] text-gray-500">
-                                                {getDeterministicSoldCount(product.slug || product.name, "DỊCH VỤ MXH")} đã bán
+                                                300+ đã bán
                                             </p>
                                         </div>
 
                                         <div
                                             className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg px-3 py-2 shadow-md hover:shadow-lg transition-all flex items-center gap-1.5"
-                                            aria-label={`Xem dịch vụ ${product.title || product.name}`}
+                                            aria-label={`Xem dịch vụ ${product.name}`}
                                         >
                                             <ShoppingCart className="h-3.5 w-3.5" />
                                             <span className="text-[11px] font-bold whitespace-nowrap">Mua ngay</span>
@@ -131,7 +155,7 @@ export default function CategoryProductGrid({ products: initialProducts, categor
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={product.image}
-                                    alt={product.title || product.name}
+                                    alt={product.name}
                                     className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
@@ -151,7 +175,7 @@ export default function CategoryProductGrid({ products: initialProducts, categor
                                 {product.isSocial ? "Dịch vụ" : "Sản phẩm"}
                             </p>
                             <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-2 line-clamp-1">
-                                {product.title || product.name}
+                                {product.name}
                             </h3>
 
                             {/* Price Info */}

@@ -2,7 +2,6 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { siteConfig } from "@/content/site";
 import Link from "next/link";
-import SiteInfo from "@/components/common/SiteInfo";
 import {
     CheckCircle,
     ShieldCheck,
@@ -243,22 +242,27 @@ export default function AboutPage() {
                                         <p className="flex items-center gap-3">
                                             <span className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600"><CheckCircle size={16} /></span>
                                             <span className="text-gray-900 font-medium">Fanpage:</span>
-                                            <SiteInfo type="facebook" asLink className="text-gray-700 hover:text-blue-600 hover:underline" fallback="https://facebook.com">LECHSHOP</SiteInfo>
+                                            <span className="text-gray-700">LECHSHOP</span>
                                         </p>
                                     </div>
                                     <div className="space-y-3">
                                         <p className="flex items-center gap-3">
                                             <span className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600"><Zap size={16} /></span>
                                             <span className="text-gray-900 font-medium">Hotline:</span>
-                                            <SiteInfo type="phone" asLink className="text-red-600 font-bold hover:underline" fallback="0868.127.491" />
+                                            <a href="tel:0868127491" className="text-red-600 font-bold hover:underline">0868.127.491</a>
                                         </p>
                                         <p className="flex items-center gap-3">
                                             <span className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><Wrench size={16} /></span>
                                             <span className="text-gray-900 font-medium">Zalo:</span>
-                                            <SiteInfo type="zalo" asLink className="text-blue-600 font-bold hover:underline" fallback="https://zalo.me/0868127491">
-                                                <SiteInfo type="phone" fallback="0868.127.491" />
-                                            </SiteInfo>
+                                            <a href="https://zalo.me/0868127491" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold hover:underline">0868.127.491</a>
                                         </p>
+                                    </div>
+                                </div>
+                                <div className="mt-4 pt-4 border-t border-gray-100 flex items-start gap-3">
+                                    <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 flex-shrink-0"><Calendar size={16} /></span>
+                                    <div>
+                                        <span className="text-gray-900 font-medium block">Địa chỉ:</span>
+                                        <span className="text-gray-600">Số Nhà 20, Ngõ 51, Khu Đô Thị Cầu Bưu, Hà Đông, Hà Nội</span>
                                     </div>
                                 </div>
                             </div>

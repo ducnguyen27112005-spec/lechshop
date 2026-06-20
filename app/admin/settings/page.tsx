@@ -107,7 +107,18 @@ export default function SiteSettingsPage() {
                         </div>
                     </div>
 
-
+                    <div>
+                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Địa chỉ</label>
+                        <div className="relative">
+                            <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                            <textarea
+                                value={config.address}
+                                onChange={(e) => handleChange("address", e.target.value)}
+                                rows={2}
+                                className="w-full pl-9 pr-3 py-2 bg-gray-50 rounded-lg font-medium text-gray-900 border-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            />
+                        </div>
+                    </div>
 
                     <div>
                         <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Thời gian làm việc</label>

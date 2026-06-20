@@ -1,11 +1,8 @@
-"use client";
-
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Image from "next/image";
 import { ShoppingCart, FileText, CreditCard, Mail, Phone, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { useSiteConfig } from "@/hooks/use-site-config";
 
 const steps = [
     {
@@ -95,8 +92,6 @@ const steps = [
 ];
 
 export default function GuidesPage() {
-    const config = useSiteConfig();
-    
     return (
         <div className="py-16">
             <Container>
@@ -188,8 +183,8 @@ export default function GuidesPage() {
                                     <Phone className="h-4 w-4 text-red-500" />
                                 </span>
                                 Hotline:{" "}
-                                <a href={`tel:${config.phone.replace(/\./g, '')}`} className="font-bold text-red-600 hover:underline">
-                                    {config.phone}
+                                <a href="tel:0868127491" className="font-bold text-red-600 hover:underline">
+                                    0868.127.491
                                 </a>
                             </li>
                             <li className="flex items-center gap-3">
@@ -197,8 +192,8 @@ export default function GuidesPage() {
                                     <Mail className="h-4 w-4 text-blue-500" />
                                 </span>
                                 Email:{" "}
-                                <a href={`mailto:${config.email}`} className="font-bold text-blue-600 hover:underline">
-                                    {config.email}
+                                <a href="mailto:lechshop.cskh@gmail.com" className="font-bold text-blue-600 hover:underline">
+                                    lechshop.cskh@gmail.com
                                 </a>
                             </li>
                             <li className="flex items-center gap-3">
@@ -207,12 +202,12 @@ export default function GuidesPage() {
                                 </span>
                                 Zalo:{" "}
                                 <a
-                                    href={config.social.zalo}
+                                    href="https://zalo.me/0868127491"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="font-bold text-blue-600 hover:underline"
                                 >
-                                    {config.phone}
+                                    0868.127.491
                                 </a>
                             </li>
                         </ul>

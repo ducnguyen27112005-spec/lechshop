@@ -17,36 +17,47 @@ const STORAGE_KEY = "lecshop_banner_config";
 export const defaultBannerConfig: BannerConfig = {
     mainBanners: [
         {
-            image: "/images/banner-summer-2026.jpg",
+            image: "/images/banner-animation.mp4",
             link: "/#premium",
-            title: "Banner LechShop Summer 2026",
+            title: "Banner video chính",
         },
         {
-            image: "/images/banner-premium-hot-new.jpg",
-            link: "/tai-khoan-premium",
-            title: "Tài Khoản Premium Hot",
+            image: "/images/banner-premium-2026.png?v=1",
+            link: "/#premium",
+            title: "Banner Premium 2026",
         },
         {
-            image: "/images/banner-tang-tuong-tac.jpg",
+            image: "/images/huong-dan-mua-hang.jpg",
             link: "/huong-dan",
-            title: "Tăng tương tác mạng xã hội",
+            title: "Hướng dẫn mua hàng",
         },
     ],
     sideBanners: [
         {
-            image: "/images/banner-tai-khoan-premium.jpg",
-            link: "/tai-khoan-premium",
-            title: "Tài Khoản Premium Hot",
+            image: "/images/gemini-sidebar-2.png",
+            link: "/san-pham/gemini-pro",
+            title: "Gemini Advanced",
         },
         {
-            image: "/images/banner-dich-vu-social.jpg",
-            link: "/dich-vu-social-hot",
-            title: "Dịch Vụ Social Hot",
+            image: "/images/chatgpt-sidebar-2.jpg",
+            link: "/san-pham/chatgpt-plus",
+            title: "ChatGPT Plus",
         },
     ],
 };
 
 export function getBannerConfig(): BannerConfig {
+    if (typeof window === "undefined") return defaultBannerConfig;
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            const parsed = JSON.parse(stored) as BannerConfig;
+            // Ensure arrays have correct length
+            if (parsed.mainBanners?.length >= 1 && parsed.sideBanners?.length >= 1) {
+                return parsed;
+            }
+        }
+    } catch { }
     return defaultBannerConfig;
 }
 

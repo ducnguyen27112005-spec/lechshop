@@ -3,15 +3,15 @@ import { routes } from "@/lib/routes";
 export const siteConfig = {
     name: "LECHSHOP",
     description: "Hỗ trợ đăng ký Netflix, ChatGPT Plus chính hãng, uy tín",
-    phone: "0344948165",
+    phone: "0868.127.491",
     email: "lechshop.cskh@gmail.com",
     address: "Số 17, ngõ 51, Tân Xã, Thạch Thất, Hà Nội",
 
     social: {
-        facebook: "https://m.me/lechshop.vn",
+        facebook: "https://m.me/binsocial",
         linkedin: "https://linkedin.com/company/techcorp",
         youtube: "https://youtube.com/@techcorp",
-        zalo: "https://zalo.me/0344948165",
+        zalo: "https://zalo.me/0868127491",
     },
 
     menu: [

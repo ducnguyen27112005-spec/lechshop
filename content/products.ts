@@ -232,7 +232,7 @@ export const premiumProducts: CompactProduct[] = [
         startingPrice: "49.000đ",
         soldCount: "553",
         image: "/images/canva-pro-new.jpg"
-    }
+    },
 ];
 
 // Social services for homepage
@@ -269,7 +269,14 @@ export const socialServices: SocialService[] = [
         ctaLink: "/lien-he",
         image: "/images/tăng ytb.jfif",
     },
-
+    {
+        id: "google-maps-review",
+        title: "Review Google Maps",
+        bullets: ["User thật, local IP", "Nội dung chuẩn SEO", "Tăng Top hiển thị"],
+        ctaText: "Tư vấn",
+        ctaLink: "/lien-he",
+        image: "/images/TT GG map 5s.png",
+    },
     {
         id: "threads-followers",
         title: "Tăng Follow Threads",
@@ -285,5 +292,29 @@ export const socialServices: SocialService[] = [
         ctaText: "Tư vấn",
         ctaLink: "/lien-he",
         image: "/images/TT shoppe.png",
+    },
+    {
+        id: "spotify-services",
+        title: "Dịch vụ Spotify",
+        bullets: ["Tăng lượt Play/Follow", "Premium IP Toàn cầu", "Bảo hành 30 ngày"],
+        ctaText: "Tư vấn",
+        ctaLink: "/lien-he",
+        image: "/images/TT spotify.png",
+    },
+    {
+        id: "website-traffic-services",
+        title: "Tăng Traffic Website",
+        bullets: ["Truy cập tự nhiên", "Nguồn đa dạng", "Tối ưu hóa SEO"],
+        ctaText: "Tư vấn",
+        ctaLink: "/lien-he",
+        image: "/images/TT traffic web.png",
+    },
+    {
+        id: "twitter-services",
+        title: "Tăng Follow Twitter (X)",
+        bullets: ["Tài khoản NFT/Crypto", "Tăng trưởng theo dõi", "Người dùng thực"],
+        ctaText: "Tư vấn",
+        ctaLink: "/lien-he",
+        image: "/images/TT twitter X.png",
     }
 ];

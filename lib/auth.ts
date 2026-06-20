@@ -5,8 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // Environment variable validation (runs once at module load)
 // ---------------------------------------------------------------------------
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "adminlechshop@admin.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "0344948165";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin@lechshop.vn";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Lecshop@2026";
 
 if (!NEXTAUTH_SECRET) {
     console.error(

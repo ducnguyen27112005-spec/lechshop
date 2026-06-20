@@ -232,48 +232,46 @@ export function SocialOrderForm({ service, onSuccess }: SocialOrderFormProps) {
                                     }}
                                 >
                                     {/* Unselected State / Always visible summary */}
-                                    <div className={`flex items-start gap-2.5 p-1.5 rounded-lg transition-colors ${isSelected ? '' : 'hover:bg-gray-50'}`}>
-                                        <div className="mt-0.5">
+                                    <div className={`flex items-start gap-3 p-2 rounded-lg transition-colors ${isSelected ? 'bg-gray-50' : ''}`}>
+                                        <div className="mt-1">
                                             {/* Radio Button */}
-                                            <div className={`w-[18px] h-[18px] rounded-full border-2 ${isSelected ? 'border-[#5bc0de]' : 'border-gray-300'} flex items-center justify-center bg-white`}>
-                                                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#5bc0de]"></div>}
+                                            <div className={`w-5 h-5 rounded-full border-2 ${isSelected ? 'border-blue-500' : 'border-gray-300'} flex items-center justify-center bg-white`}>
+                                                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>}
                                             </div>
                                         </div>
-                                        <div className="text-[13px] flex-1 leading-relaxed text-gray-800">
-                                            <span className="bg-[#dff0d8] text-[#3c763d] px-1.5 rounded text-[10px] py-0.5 mr-1.5 font-bold border border-[#d6e9c6]">MC-{index + 1}</span>
-                                            {plan.name} <span className="text-orange-500 text-xs">🔥🔥🔥</span>
-                                            <span className="text-[#5bc0de] ml-1 font-bold">- {plan.pricePerUnit}đ/1 {service.unitLabel}</span>
+                                        <div className="text-xs flex-1">
+                                            <div className="font-bold text-gray-800">
+                                                <span className="bg-[#dff0d8] text-[#3c763d] px-1 rounded text-[10px] py-0.5 mr-2 font-bold border border-[#d6e9c6]">MC-{index + 1}</span>
+                                                {plan.name} <span className="text-orange-500">🔥🔥🔥</span>
+                                                <span className="text-blue-500 ml-2 font-normal font-bold">- {plan.pricePerUnit}đ/1 {service.unitLabel}</span>
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Selected State (Gradient Box) */}
                                     {isSelected && (
-                                        <div className="rounded-lg overflow-hidden shadow-sm transform transition-all mt-2 mb-4 ml-8">
+                                        <div className="rounded-xl overflow-hidden shadow-lg transform transition-all">
                                             {/* Gradient Background */}
-                                            <div className="bg-gradient-to-r from-[#e06c75] to-[#c678dd] text-white p-3.5 relative">
-                                                    <div className="flex flex-col gap-1.5">
-                                                        <div className="font-medium text-[13px] leading-snug">
-                                                            {plan.name} <span className="ml-1">🔥🔥🔥</span>
+                                            <div className="bg-gradient-to-r from-[#e06c75] to-[#c678dd] text-white p-5 relative">
+                                                <div className="pl-8">
+                                                    {plan.description ? (
+                                                        <div className="text-sm leading-relaxed whitespace-pre-line">
+                                                            {plan.description}
                                                         </div>
-                                                        <div className="text-center text-[13px] font-medium opacity-100">
-                                                            MÃ GÓI: {plan.code}
-                                                        </div>
-                                                        <div className="text-[13px] font-medium opacity-90">
-                                                            - Min - Max: {plan.min?.toLocaleString('vi-VN')} - {plan.max?.toLocaleString('vi-VN')}
-                                                        </div>
-
-                                                        {plan.description && (
-                                                            <>
-                                                                <div className="text-center text-[13px] font-medium mt-1 uppercase">
-                                                                    - THÔNG TIN MÁY CHỦ -
-                                                                </div>
-                                                                <div 
-                                                                    className="text-[13px] leading-snug [&>p]:mb-0 font-medium [&_p:empty]:hidden [&_br]:hidden"
-                                                                    dangerouslySetInnerHTML={{ __html: plan.description }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </div>
+                                                    ) : (
+                                                        <>
+                                                            <div className="font-bold text-lg mb-1 leading-snug">
+                                                                {plan.name} <span className="ml-1">🔥🔥🔥</span>
+                                                            </div>
+                                                            <div className="text-center my-3 text-xs font-medium opacity-90">
+                                                                MÃ GÓI: {plan.code}
+                                                            </div>
+                                                            <div className="text-xs mb-3 font-medium">
+                                                                - Min - Max: {plan.min} - {plan.max?.toLocaleString()}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     )}

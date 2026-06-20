@@ -17,7 +17,7 @@ export function readProductsFromDisk(): ProductsConfig {
         }
         const raw = fs.readFileSync(DATA_FILE, "utf-8");
         const parsed = JSON.parse(raw) as ProductsConfig;
-        if (!parsed.products) {
+        if (!parsed.products || parsed.products.length === 0) {
             return defaultProductsConfig;
         }
         return parsed;

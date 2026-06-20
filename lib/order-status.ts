@@ -45,9 +45,6 @@ export function normalizeSocialOrderStatus(status: string): NormalizedStatus {
     const s = status?.toLowerCase() || '';
 
     switch (s) {
-        case 'new':
-        case 'pending':
-            return 'CHO_THANH_TOAN';
         case 'received':
             return 'DA_THANH_TOAN';
         case 'preparing':
