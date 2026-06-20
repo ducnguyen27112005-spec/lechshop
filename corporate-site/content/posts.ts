@@ -4,7 +4,18 @@ export interface Post {
     title: string;
     excerpt: string;
     content: string;
-    image: string;
+    image?: string; // Legacy
+    thumbnail: string | null;
+    thumbnailUrl: string | null;
+    status: "DRAFT" | "PUBLISHED" | "HIDDEN";
+    viewCount: number;
+    isFeatured: boolean;
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: string;
+    categoryId?: string;
+    category?: { name: string; slug: string };
+    tags?: { id: string; name: string; slug: string }[];
     date: string;
     author: string;
 }
@@ -35,6 +46,11 @@ Netflix là nền tảng giải trí trực tuyến hàng đầu thế giới...
 - Download không giới hạn
     `,
         image: "/images/hero-1.jpg",
+        thumbnail: "/images/hero-1.jpg",
+        thumbnailUrl: "/images/hero-1.jpg",
+        status: "PUBLISHED",
+        viewCount: 0,
+        isFeatured: false,
         date: "2026-01-25",
         author: "Admin",
     },
@@ -56,6 +72,11 @@ ChatGPT Plus là phiên bản cao cấp của ChatGPT...
 - Ưu tiên trong giờ cao điểm
     `,
         image: "/images/hero-2.jpg",
+        thumbnail: "/images/hero-2.jpg",
+        thumbnailUrl: "/images/hero-2.jpg",
+        status: "PUBLISHED",
+        viewCount: 0,
+        isFeatured: false,
         date: "2026-01-20",
         author: "Admin",
     },
@@ -77,6 +98,11 @@ Bảo mật tài khoản là vô cùng quan trọng...
 - Không chia sẻ thông tin đăng nhập
     `,
         image: "/images/hero-3.jpg",
+        thumbnail: "/images/hero-3.jpg",
+        thumbnailUrl: "/images/hero-3.jpg",
+        status: "PUBLISHED",
+        viewCount: 0,
+        isFeatured: false,
         date: "2026-01-15",
         author: "Admin",
     },
@@ -92,6 +118,11 @@ Bảo mật tài khoản là vô cùng quan trọng...
 Netflix có 3 gói chính: Basic, Standard, Premium...
     `,
         image: "/images/hero-1.jpg",
+        thumbnail: "/images/hero-1.jpg",
+        thumbnailUrl: "/images/hero-1.jpg",
+        status: "PUBLISHED",
+        viewCount: 0,
+        isFeatured: false,
         date: "2026-01-10",
         author: "Admin",
     },

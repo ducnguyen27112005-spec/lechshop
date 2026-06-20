@@ -185,6 +185,11 @@ export default function CheckoutPage() {
     };
 
     const handlePlaceOrder = async () => {
+        if (items.length === 0) {
+            alert("Giỏ hàng của bạn đang trống!");
+            return;
+        }
+
         if (!formData.name || !formData.phone || !formData.email || !formData.agreeTerms) {
             alert("Vui lòng điền đầy đủ thông tin và đồng ý điều khoản!");
             return;

@@ -166,27 +166,42 @@ export async function GET(request: Request) {
             let totalOrders = data.length;
             let revenue = 0;
             let pendingOrders = 0;
+            let unpaidCount = 0;
+            let paidOrdersCount = 0;
             const uniqueCustomers = new Set();
 
             data.forEach(item => {
-                revenue += item.amount;
-                if (item.__group === 'pending' || item.__normalizedStatus === 'CHO_THANH_TOAN') {
+                // Doanh thu chỉ tính các đơn ĐÃ THANH TOÁN trở lên
+                if (item.__normalizedStatus !== 'CHO_THANH_TOAN' && item.__normalizedStatus !== 'DA_HUY' && item.__normalizedStatus !== 'THAT_BAI') {
+                    revenue += item.amount;
+                    paidOrdersCount++;
+                }
+
+                // Đơn hàng chờ: Những đơn ĐÃ THANH TOÁN nhưng chưa xử lý xong
+                if (item.__normalizedStatus === 'DA_THANH_TOAN' || item.__normalizedStatus === 'DANG_XU_LY') {
                     pendingOrders++;
                 }
+                
+                // Những đơn chưa thanh toán (khách mới tới bước chuyển khoản)
+                if (item.__normalizedStatus === 'CHO_THANH_TOAN') {
+                    unpaidCount++;
+                }
+
                 if (item.customerName) uniqueCustomers.add(item.customerName);
             });
 
-            const aov = totalOrders > 0 ? revenue / totalOrders : 0;
+            const aov = paidOrdersCount > 0 ? revenue / paidOrdersCount : 0;
             const newCustomers = uniqueCustomers.size;
 
-            return { totalOrders, revenue, aov, pendingOrders, newCustomers };
+            return { totalOrders, revenue, aov, pendingOrders, newCustomers, unpaidCount };
         };
 
         const currentKPICalc = calcKPIs(currentData);
         const prevKPICalc = calcKPIs(previousData);
 
         // Fetch CANCELLED separately across the database for accurate counts avoiding in-memory array bloat of cancelled data
-        let cancelledCurrent = 0, cancelledPrev = 0;
+        let cancelledCurrent = currentKPICalc.unpaidCount; // Tính luôn các đơn chưa thanh toán vào đơn hủy
+        let cancelledPrev = prevKPICalc.unpaidCount;
         if (typeStr === 'all' || typeStr === 'product') {
             cancelledCurrent += await prisma.order.count({ where: { createdAt: { gte: from, lt: toNextDay }, fulfillStatus: 'CANCELLED' } });
             cancelledPrev += await prisma.order.count({ where: { createdAt: { gte: prevFrom, lt: prevTo }, fulfillStatus: 'CANCELLED' } });
@@ -216,7 +231,7 @@ export async function GET(request: Request) {
         const revenueByDay = daysInInterval.map(day => {
             const dayStr = format(day, "dd/MM");
             const rev = currentData
-                .filter(item => isSameDay(new Date(item.createdAt), day))
+                .filter(item => isSameDay(new Date(item.createdAt), day) && item.__normalizedStatus !== 'CHO_THANH_TOAN' && item.__normalizedStatus !== 'DA_HUY' && item.__normalizedStatus !== 'THAT_BAI')
                 .reduce((acc, curr) => acc + curr.amount, 0);
             return { day: dayStr, revenue: rev };
         });

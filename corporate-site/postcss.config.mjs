@@ -4,4 +4,6 @@ const config = {
   },
 };
 
+// Force rebuild timestamp
+
 export default config;

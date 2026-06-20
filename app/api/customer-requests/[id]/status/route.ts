@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
@@ -9,7 +9,7 @@ const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
  * BODY: { "status": "waiting_delivery" | "done" | ... }
  */
 export async function PATCH(
-    request: Request,
+    request: NextRequest,
     context: { params: Promise<{ id: string }> }
 ) {
     try {

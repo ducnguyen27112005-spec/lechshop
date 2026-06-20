@@ -31,6 +31,12 @@ export interface ProductData {
     badges?: string[];
     originalPrice?: string;
     pricing: { price: string; duration: string }[];
+    apiPlans?: {
+        id: string;
+        label: string;
+        price: number;
+        originalPrice?: number;
+    }[];
 }
 
 interface ProductDetailViewProps {
@@ -161,6 +167,7 @@ export default function ProductDetailView({ productData }: ProductDetailViewProp
                                         productSlug={productData.slug}
                                         serviceType={productData.type}
                                         imageUrl={productData.image}
+                                        apiPlans={productData.apiPlans}
                                     />
                                 </div>
                             </div>

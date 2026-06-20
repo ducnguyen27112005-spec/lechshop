@@ -9,7 +9,13 @@ export async function GET() {
 
     try {
         const orders = await prisma.order.findMany({
-            orderBy: { createdAt: "desc" }
+            orderBy: { createdAt: "desc" },
+            include: {
+                fulfillments: {
+                    orderBy: { createdAt: "desc" },
+                    include: { supplier: true }
+                }
+            }
         });
         return NextResponse.json(orders);
     } catch (error) {

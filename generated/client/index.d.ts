@@ -124,6 +124,11 @@ export type CouponUsageLog = $Result.DefaultSelection<Prisma.$CouponUsageLogPayl
  */
 export type ReferralCode = $Result.DefaultSelection<Prisma.$ReferralCodePayload>
 /**
+ * Model AffiliateUser
+ * 
+ */
+export type AffiliateUser = $Result.DefaultSelection<Prisma.$AffiliateUserPayload>
+/**
  * Model ReferralClick
  * 
  */
@@ -690,6 +695,16 @@ export class PrismaClient<
   get referralCode(): Prisma.ReferralCodeDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.affiliateUser`: Exposes CRUD operations for the **AffiliateUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AffiliateUsers
+    * const affiliateUsers = await prisma.affiliateUser.findMany()
+    * ```
+    */
+  get affiliateUser(): Prisma.AffiliateUserDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.referralClick`: Exposes CRUD operations for the **ReferralClick** model.
     * Example usage:
     * ```ts
@@ -836,7 +851,7 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.2
+   * Prisma Client JS version: 6.19.3
    * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
@@ -1241,6 +1256,7 @@ export namespace Prisma {
     DiscountCode: 'DiscountCode',
     CouponUsageLog: 'CouponUsageLog',
     ReferralCode: 'ReferralCode',
+    AffiliateUser: 'AffiliateUser',
     ReferralClick: 'ReferralClick',
     ReferralAttribution: 'ReferralAttribution',
     Commission: 'Commission',
@@ -1268,7 +1284,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "adminUser" | "premiumProduct" | "socialCategory" | "socialService" | "socialPlan" | "socialOrder" | "socialOrderEvent" | "socialOrderFulfillment" | "supplier" | "orderFulfillment" | "inventoryItem" | "order" | "post" | "category" | "tag" | "fAQ" | "setting" | "banner" | "transaction" | "discountCode" | "couponUsageLog" | "referralCode" | "referralClick" | "referralAttribution" | "commission" | "affiliateLog" | "wallet" | "withdrawRequest" | "studentRequest" | "studentBenefit" | "studentDiscountConfig"
+      modelProps: "adminUser" | "premiumProduct" | "socialCategory" | "socialService" | "socialPlan" | "socialOrder" | "socialOrderEvent" | "socialOrderFulfillment" | "supplier" | "orderFulfillment" | "inventoryItem" | "order" | "post" | "category" | "tag" | "fAQ" | "setting" | "banner" | "transaction" | "discountCode" | "couponUsageLog" | "referralCode" | "affiliateUser" | "referralClick" | "referralAttribution" | "commission" | "affiliateLog" | "wallet" | "withdrawRequest" | "studentRequest" | "studentBenefit" | "studentDiscountConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2900,6 +2916,80 @@ export namespace Prisma {
           }
         }
       }
+      AffiliateUser: {
+        payload: Prisma.$AffiliateUserPayload<ExtArgs>
+        fields: Prisma.AffiliateUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AffiliateUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AffiliateUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          findFirst: {
+            args: Prisma.AffiliateUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AffiliateUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          findMany: {
+            args: Prisma.AffiliateUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>[]
+          }
+          create: {
+            args: Prisma.AffiliateUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          createMany: {
+            args: Prisma.AffiliateUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AffiliateUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>[]
+          }
+          delete: {
+            args: Prisma.AffiliateUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          update: {
+            args: Prisma.AffiliateUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.AffiliateUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AffiliateUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AffiliateUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.AffiliateUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateUserPayload>
+          }
+          aggregate: {
+            args: Prisma.AffiliateUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAffiliateUser>
+          }
+          groupBy: {
+            args: Prisma.AffiliateUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AffiliateUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AffiliateUserCountArgs<ExtArgs>
+            result: $Utils.Optional<AffiliateUserCountAggregateOutputType> | number
+          }
+        }
+      }
       ReferralClick: {
         payload: Prisma.$ReferralClickPayload<ExtArgs>
         fields: Prisma.ReferralClickFieldRefs
@@ -3684,6 +3774,7 @@ export namespace Prisma {
     discountCode?: DiscountCodeOmit
     couponUsageLog?: CouponUsageLogOmit
     referralCode?: ReferralCodeOmit
+    affiliateUser?: AffiliateUserOmit
     referralClick?: ReferralClickOmit
     referralAttribution?: ReferralAttributionOmit
     commission?: CommissionOmit
@@ -29317,6 +29408,1038 @@ export namespace Prisma {
 
 
   /**
+   * Model AffiliateUser
+   */
+
+  export type AggregateAffiliateUser = {
+    _count: AffiliateUserCountAggregateOutputType | null
+    _min: AffiliateUserMinAggregateOutputType | null
+    _max: AffiliateUserMaxAggregateOutputType | null
+  }
+
+  export type AffiliateUserMinAggregateOutputType = {
+    id: string | null
+    phone: string | null
+    password: string | null
+    fullName: string | null
+    referralCode: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliateUserMaxAggregateOutputType = {
+    id: string | null
+    phone: string | null
+    password: string | null
+    fullName: string | null
+    referralCode: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliateUserCountAggregateOutputType = {
+    id: number
+    phone: number
+    password: number
+    fullName: number
+    referralCode: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AffiliateUserMinAggregateInputType = {
+    id?: true
+    phone?: true
+    password?: true
+    fullName?: true
+    referralCode?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliateUserMaxAggregateInputType = {
+    id?: true
+    phone?: true
+    password?: true
+    fullName?: true
+    referralCode?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliateUserCountAggregateInputType = {
+    id?: true
+    phone?: true
+    password?: true
+    fullName?: true
+    referralCode?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AffiliateUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliateUser to aggregate.
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateUsers to fetch.
+     */
+    orderBy?: AffiliateUserOrderByWithRelationInput | AffiliateUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AffiliateUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AffiliateUsers
+    **/
+    _count?: true | AffiliateUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AffiliateUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AffiliateUserMaxAggregateInputType
+  }
+
+  export type GetAffiliateUserAggregateType<T extends AffiliateUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateAffiliateUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAffiliateUser[P]>
+      : GetScalarType<T[P], AggregateAffiliateUser[P]>
+  }
+
+
+
+
+  export type AffiliateUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliateUserWhereInput
+    orderBy?: AffiliateUserOrderByWithAggregationInput | AffiliateUserOrderByWithAggregationInput[]
+    by: AffiliateUserScalarFieldEnum[] | AffiliateUserScalarFieldEnum
+    having?: AffiliateUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AffiliateUserCountAggregateInputType | true
+    _min?: AffiliateUserMinAggregateInputType
+    _max?: AffiliateUserMaxAggregateInputType
+  }
+
+  export type AffiliateUserGroupByOutputType = {
+    id: string
+    phone: string
+    password: string
+    fullName: string | null
+    referralCode: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AffiliateUserCountAggregateOutputType | null
+    _min: AffiliateUserMinAggregateOutputType | null
+    _max: AffiliateUserMaxAggregateOutputType | null
+  }
+
+  type GetAffiliateUserGroupByPayload<T extends AffiliateUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AffiliateUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AffiliateUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AffiliateUserGroupByOutputType[P]>
+            : GetScalarType<T[P], AffiliateUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AffiliateUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    phone?: boolean
+    password?: boolean
+    fullName?: boolean
+    referralCode?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["affiliateUser"]>
+
+  export type AffiliateUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    phone?: boolean
+    password?: boolean
+    fullName?: boolean
+    referralCode?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["affiliateUser"]>
+
+  export type AffiliateUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    phone?: boolean
+    password?: boolean
+    fullName?: boolean
+    referralCode?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["affiliateUser"]>
+
+  export type AffiliateUserSelectScalar = {
+    id?: boolean
+    phone?: boolean
+    password?: boolean
+    fullName?: boolean
+    referralCode?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AffiliateUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "phone" | "password" | "fullName" | "referralCode" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateUser"]>
+
+  export type $AffiliateUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AffiliateUser"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      phone: string
+      password: string
+      fullName: string | null
+      referralCode: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["affiliateUser"]>
+    composites: {}
+  }
+
+  type AffiliateUserGetPayload<S extends boolean | null | undefined | AffiliateUserDefaultArgs> = $Result.GetResult<Prisma.$AffiliateUserPayload, S>
+
+  type AffiliateUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AffiliateUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AffiliateUserCountAggregateInputType | true
+    }
+
+  export interface AffiliateUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AffiliateUser'], meta: { name: 'AffiliateUser' } }
+    /**
+     * Find zero or one AffiliateUser that matches the filter.
+     * @param {AffiliateUserFindUniqueArgs} args - Arguments to find a AffiliateUser
+     * @example
+     * // Get one AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AffiliateUserFindUniqueArgs>(args: SelectSubset<T, AffiliateUserFindUniqueArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AffiliateUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AffiliateUserFindUniqueOrThrowArgs} args - Arguments to find a AffiliateUser
+     * @example
+     * // Get one AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AffiliateUserFindUniqueOrThrowArgs>(args: SelectSubset<T, AffiliateUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliateUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserFindFirstArgs} args - Arguments to find a AffiliateUser
+     * @example
+     * // Get one AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AffiliateUserFindFirstArgs>(args?: SelectSubset<T, AffiliateUserFindFirstArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliateUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserFindFirstOrThrowArgs} args - Arguments to find a AffiliateUser
+     * @example
+     * // Get one AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AffiliateUserFindFirstOrThrowArgs>(args?: SelectSubset<T, AffiliateUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AffiliateUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AffiliateUsers
+     * const affiliateUsers = await prisma.affiliateUser.findMany()
+     * 
+     * // Get first 10 AffiliateUsers
+     * const affiliateUsers = await prisma.affiliateUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const affiliateUserWithIdOnly = await prisma.affiliateUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AffiliateUserFindManyArgs>(args?: SelectSubset<T, AffiliateUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AffiliateUser.
+     * @param {AffiliateUserCreateArgs} args - Arguments to create a AffiliateUser.
+     * @example
+     * // Create one AffiliateUser
+     * const AffiliateUser = await prisma.affiliateUser.create({
+     *   data: {
+     *     // ... data to create a AffiliateUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends AffiliateUserCreateArgs>(args: SelectSubset<T, AffiliateUserCreateArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AffiliateUsers.
+     * @param {AffiliateUserCreateManyArgs} args - Arguments to create many AffiliateUsers.
+     * @example
+     * // Create many AffiliateUsers
+     * const affiliateUser = await prisma.affiliateUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AffiliateUserCreateManyArgs>(args?: SelectSubset<T, AffiliateUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AffiliateUsers and returns the data saved in the database.
+     * @param {AffiliateUserCreateManyAndReturnArgs} args - Arguments to create many AffiliateUsers.
+     * @example
+     * // Create many AffiliateUsers
+     * const affiliateUser = await prisma.affiliateUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AffiliateUsers and only return the `id`
+     * const affiliateUserWithIdOnly = await prisma.affiliateUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AffiliateUserCreateManyAndReturnArgs>(args?: SelectSubset<T, AffiliateUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AffiliateUser.
+     * @param {AffiliateUserDeleteArgs} args - Arguments to delete one AffiliateUser.
+     * @example
+     * // Delete one AffiliateUser
+     * const AffiliateUser = await prisma.affiliateUser.delete({
+     *   where: {
+     *     // ... filter to delete one AffiliateUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AffiliateUserDeleteArgs>(args: SelectSubset<T, AffiliateUserDeleteArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AffiliateUser.
+     * @param {AffiliateUserUpdateArgs} args - Arguments to update one AffiliateUser.
+     * @example
+     * // Update one AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AffiliateUserUpdateArgs>(args: SelectSubset<T, AffiliateUserUpdateArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AffiliateUsers.
+     * @param {AffiliateUserDeleteManyArgs} args - Arguments to filter AffiliateUsers to delete.
+     * @example
+     * // Delete a few AffiliateUsers
+     * const { count } = await prisma.affiliateUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AffiliateUserDeleteManyArgs>(args?: SelectSubset<T, AffiliateUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliateUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AffiliateUsers
+     * const affiliateUser = await prisma.affiliateUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AffiliateUserUpdateManyArgs>(args: SelectSubset<T, AffiliateUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliateUsers and returns the data updated in the database.
+     * @param {AffiliateUserUpdateManyAndReturnArgs} args - Arguments to update many AffiliateUsers.
+     * @example
+     * // Update many AffiliateUsers
+     * const affiliateUser = await prisma.affiliateUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AffiliateUsers and only return the `id`
+     * const affiliateUserWithIdOnly = await prisma.affiliateUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AffiliateUserUpdateManyAndReturnArgs>(args: SelectSubset<T, AffiliateUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AffiliateUser.
+     * @param {AffiliateUserUpsertArgs} args - Arguments to update or create a AffiliateUser.
+     * @example
+     * // Update or create a AffiliateUser
+     * const affiliateUser = await prisma.affiliateUser.upsert({
+     *   create: {
+     *     // ... data to create a AffiliateUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AffiliateUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AffiliateUserUpsertArgs>(args: SelectSubset<T, AffiliateUserUpsertArgs<ExtArgs>>): Prisma__AffiliateUserClient<$Result.GetResult<Prisma.$AffiliateUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AffiliateUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserCountArgs} args - Arguments to filter AffiliateUsers to count.
+     * @example
+     * // Count the number of AffiliateUsers
+     * const count = await prisma.affiliateUser.count({
+     *   where: {
+     *     // ... the filter for the AffiliateUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AffiliateUserCountArgs>(
+      args?: Subset<T, AffiliateUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AffiliateUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AffiliateUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AffiliateUserAggregateArgs>(args: Subset<T, AffiliateUserAggregateArgs>): Prisma.PrismaPromise<GetAffiliateUserAggregateType<T>>
+
+    /**
+     * Group by AffiliateUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AffiliateUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AffiliateUserGroupByArgs['orderBy'] }
+        : { orderBy?: AffiliateUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AffiliateUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAffiliateUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AffiliateUser model
+   */
+  readonly fields: AffiliateUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AffiliateUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AffiliateUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AffiliateUser model
+   */
+  interface AffiliateUserFieldRefs {
+    readonly id: FieldRef<"AffiliateUser", 'String'>
+    readonly phone: FieldRef<"AffiliateUser", 'String'>
+    readonly password: FieldRef<"AffiliateUser", 'String'>
+    readonly fullName: FieldRef<"AffiliateUser", 'String'>
+    readonly referralCode: FieldRef<"AffiliateUser", 'String'>
+    readonly isActive: FieldRef<"AffiliateUser", 'Boolean'>
+    readonly createdAt: FieldRef<"AffiliateUser", 'DateTime'>
+    readonly updatedAt: FieldRef<"AffiliateUser", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AffiliateUser findUnique
+   */
+  export type AffiliateUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AffiliateUser to fetch.
+     */
+    where: AffiliateUserWhereUniqueInput
+  }
+
+  /**
+   * AffiliateUser findUniqueOrThrow
+   */
+  export type AffiliateUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AffiliateUser to fetch.
+     */
+    where: AffiliateUserWhereUniqueInput
+  }
+
+  /**
+   * AffiliateUser findFirst
+   */
+  export type AffiliateUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AffiliateUser to fetch.
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateUsers to fetch.
+     */
+    orderBy?: AffiliateUserOrderByWithRelationInput | AffiliateUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliateUsers.
+     */
+    cursor?: AffiliateUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliateUsers.
+     */
+    distinct?: AffiliateUserScalarFieldEnum | AffiliateUserScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateUser findFirstOrThrow
+   */
+  export type AffiliateUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AffiliateUser to fetch.
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateUsers to fetch.
+     */
+    orderBy?: AffiliateUserOrderByWithRelationInput | AffiliateUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliateUsers.
+     */
+    cursor?: AffiliateUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliateUsers.
+     */
+    distinct?: AffiliateUserScalarFieldEnum | AffiliateUserScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateUser findMany
+   */
+  export type AffiliateUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AffiliateUsers to fetch.
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateUsers to fetch.
+     */
+    orderBy?: AffiliateUserOrderByWithRelationInput | AffiliateUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AffiliateUsers.
+     */
+    cursor?: AffiliateUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateUsers.
+     */
+    skip?: number
+    distinct?: AffiliateUserScalarFieldEnum | AffiliateUserScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateUser create
+   */
+  export type AffiliateUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AffiliateUser.
+     */
+    data: XOR<AffiliateUserCreateInput, AffiliateUserUncheckedCreateInput>
+  }
+
+  /**
+   * AffiliateUser createMany
+   */
+  export type AffiliateUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AffiliateUsers.
+     */
+    data: AffiliateUserCreateManyInput | AffiliateUserCreateManyInput[]
+  }
+
+  /**
+   * AffiliateUser createManyAndReturn
+   */
+  export type AffiliateUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many AffiliateUsers.
+     */
+    data: AffiliateUserCreateManyInput | AffiliateUserCreateManyInput[]
+  }
+
+  /**
+   * AffiliateUser update
+   */
+  export type AffiliateUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AffiliateUser.
+     */
+    data: XOR<AffiliateUserUpdateInput, AffiliateUserUncheckedUpdateInput>
+    /**
+     * Choose, which AffiliateUser to update.
+     */
+    where: AffiliateUserWhereUniqueInput
+  }
+
+  /**
+   * AffiliateUser updateMany
+   */
+  export type AffiliateUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AffiliateUsers.
+     */
+    data: XOR<AffiliateUserUpdateManyMutationInput, AffiliateUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliateUsers to update
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * Limit how many AffiliateUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliateUser updateManyAndReturn
+   */
+  export type AffiliateUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * The data used to update AffiliateUsers.
+     */
+    data: XOR<AffiliateUserUpdateManyMutationInput, AffiliateUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliateUsers to update
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * Limit how many AffiliateUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliateUser upsert
+   */
+  export type AffiliateUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AffiliateUser to update in case it exists.
+     */
+    where: AffiliateUserWhereUniqueInput
+    /**
+     * In case the AffiliateUser found by the `where` argument doesn't exist, create a new AffiliateUser with this data.
+     */
+    create: XOR<AffiliateUserCreateInput, AffiliateUserUncheckedCreateInput>
+    /**
+     * In case the AffiliateUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AffiliateUserUpdateInput, AffiliateUserUncheckedUpdateInput>
+  }
+
+  /**
+   * AffiliateUser delete
+   */
+  export type AffiliateUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+    /**
+     * Filter which AffiliateUser to delete.
+     */
+    where: AffiliateUserWhereUniqueInput
+  }
+
+  /**
+   * AffiliateUser deleteMany
+   */
+  export type AffiliateUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliateUsers to delete
+     */
+    where?: AffiliateUserWhereInput
+    /**
+     * Limit how many AffiliateUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliateUser without action
+   */
+  export type AffiliateUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateUser
+     */
+    select?: AffiliateUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateUser
+     */
+    omit?: AffiliateUserOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model ReferralClick
    */
 
@@ -39281,6 +40404,20 @@ export namespace Prisma {
   export type ReferralCodeScalarFieldEnum = (typeof ReferralCodeScalarFieldEnum)[keyof typeof ReferralCodeScalarFieldEnum]
 
 
+  export const AffiliateUserScalarFieldEnum: {
+    id: 'id',
+    phone: 'phone',
+    password: 'password',
+    fullName: 'fullName',
+    referralCode: 'referralCode',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AffiliateUserScalarFieldEnum = (typeof AffiliateUserScalarFieldEnum)[keyof typeof AffiliateUserScalarFieldEnum]
+
+
   export const ReferralClickScalarFieldEnum: {
     id: 'id',
     codeId: 'codeId',
@@ -41370,6 +42507,73 @@ export namespace Prisma {
     status?: EnumReferralStatusWithAggregatesFilter<"ReferralCode"> | $Enums.ReferralStatus
     createdAt?: DateTimeWithAggregatesFilter<"ReferralCode"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ReferralCode"> | Date | string
+  }
+
+  export type AffiliateUserWhereInput = {
+    AND?: AffiliateUserWhereInput | AffiliateUserWhereInput[]
+    OR?: AffiliateUserWhereInput[]
+    NOT?: AffiliateUserWhereInput | AffiliateUserWhereInput[]
+    id?: StringFilter<"AffiliateUser"> | string
+    phone?: StringFilter<"AffiliateUser"> | string
+    password?: StringFilter<"AffiliateUser"> | string
+    fullName?: StringNullableFilter<"AffiliateUser"> | string | null
+    referralCode?: StringFilter<"AffiliateUser"> | string
+    isActive?: BoolFilter<"AffiliateUser"> | boolean
+    createdAt?: DateTimeFilter<"AffiliateUser"> | Date | string
+    updatedAt?: DateTimeFilter<"AffiliateUser"> | Date | string
+  }
+
+  export type AffiliateUserOrderByWithRelationInput = {
+    id?: SortOrder
+    phone?: SortOrder
+    password?: SortOrder
+    fullName?: SortOrderInput | SortOrder
+    referralCode?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    phone?: string
+    referralCode?: string
+    AND?: AffiliateUserWhereInput | AffiliateUserWhereInput[]
+    OR?: AffiliateUserWhereInput[]
+    NOT?: AffiliateUserWhereInput | AffiliateUserWhereInput[]
+    password?: StringFilter<"AffiliateUser"> | string
+    fullName?: StringNullableFilter<"AffiliateUser"> | string | null
+    isActive?: BoolFilter<"AffiliateUser"> | boolean
+    createdAt?: DateTimeFilter<"AffiliateUser"> | Date | string
+    updatedAt?: DateTimeFilter<"AffiliateUser"> | Date | string
+  }, "id" | "phone" | "referralCode">
+
+  export type AffiliateUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    phone?: SortOrder
+    password?: SortOrder
+    fullName?: SortOrderInput | SortOrder
+    referralCode?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AffiliateUserCountOrderByAggregateInput
+    _max?: AffiliateUserMaxOrderByAggregateInput
+    _min?: AffiliateUserMinOrderByAggregateInput
+  }
+
+  export type AffiliateUserScalarWhereWithAggregatesInput = {
+    AND?: AffiliateUserScalarWhereWithAggregatesInput | AffiliateUserScalarWhereWithAggregatesInput[]
+    OR?: AffiliateUserScalarWhereWithAggregatesInput[]
+    NOT?: AffiliateUserScalarWhereWithAggregatesInput | AffiliateUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AffiliateUser"> | string
+    phone?: StringWithAggregatesFilter<"AffiliateUser"> | string
+    password?: StringWithAggregatesFilter<"AffiliateUser"> | string
+    fullName?: StringNullableWithAggregatesFilter<"AffiliateUser"> | string | null
+    referralCode?: StringWithAggregatesFilter<"AffiliateUser"> | string
+    isActive?: BoolWithAggregatesFilter<"AffiliateUser"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AffiliateUser"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AffiliateUser"> | Date | string
   }
 
   export type ReferralClickWhereInput = {
@@ -44030,6 +45234,83 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AffiliateUserCreateInput = {
+    id?: string
+    phone: string
+    password: string
+    fullName?: string | null
+    referralCode: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliateUserUncheckedCreateInput = {
+    id?: string
+    phone: string
+    password: string
+    fullName?: string | null
+    referralCode: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliateUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    referralCode?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliateUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    referralCode?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliateUserCreateManyInput = {
+    id?: string
+    phone: string
+    password: string
+    fullName?: string | null
+    referralCode: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliateUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    referralCode?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliateUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    referralCode?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ReferralClickCreateInput = {
     id?: string
     ipHash?: string | null
@@ -46257,6 +47538,39 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumReferralStatusFilter<$PrismaModel>
     _max?: NestedEnumReferralStatusFilter<$PrismaModel>
+  }
+
+  export type AffiliateUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    phone?: SortOrder
+    password?: SortOrder
+    fullName?: SortOrder
+    referralCode?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    phone?: SortOrder
+    password?: SortOrder
+    fullName?: SortOrder
+    referralCode?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    phone?: SortOrder
+    password?: SortOrder
+    fullName?: SortOrder
+    referralCode?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ReferralCodeScalarRelationFilter = {

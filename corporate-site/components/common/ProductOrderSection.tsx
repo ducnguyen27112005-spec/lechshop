@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Loader2, ShoppingCart, Plus, MessageCircle } from "lucide-react";
-import { createCustomerRequest } from "@/lib/strapi";
+import { ShoppingCart, Plus } from "lucide-react";
 import { Plan } from "@/content/productPlans";
 import { useCart } from "@/contexts/CartContext";
 
@@ -11,6 +10,7 @@ interface ProductOrderSectionProps {
     productSlug: string;
     serviceType: "premium" | "social";
     plans: Plan[];
+    imageUrl?: string;
 }
 
 export default function ProductOrderSection({
@@ -18,15 +18,13 @@ export default function ProductOrderSection({
     productSlug,
     serviceType,
     plans,
+    imageUrl,
 }: ProductOrderSectionProps) {
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(plans[0] || null);
     const { addItem } = useCart();
     const [showToast, setShowToast] = useState(false);
 
-    const [formData, setFormData] = useState({
-        note: "",
-    });
-    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleAddToCart = () => {
@@ -40,124 +38,100 @@ export default function ProductOrderSection({
             name: productName,
             price: selectedPlan.price,
             planLabel: selectedPlan.label,
-            image: `/images/${productSlug}.jpg`,
+            image: imageUrl || `/images/${productSlug}.jpg`,
         });
 
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleBuyNow = () => {
         if (!selectedPlan) {
             setErrorMessage("Vui lòng chọn một gói dịch vụ.");
             return;
         }
 
-        setStatus("loading");
-        setErrorMessage("");
+        addItem({
+            id: `${productSlug}-${selectedPlan.id}`,
+            name: productName,
+            price: selectedPlan.price,
+            planLabel: selectedPlan.label,
+            image: imageUrl || `/images/${productSlug}.jpg`,
+        });
 
-        const payload = {
-            fullName: "Khách hàng",
-            contact: "",
-            serviceType,
-            serviceName: productName,
-            note: `Gói: ${selectedPlan.label} - ${selectedPlan.price.toLocaleString("vi-VN")}đ${formData.note ? `\nGhi chú: ${formData.note}` : ""}`,
-            status: "new" as const,
-        };
-
-        const createdRecord = await createCustomerRequest(payload);
-
-        if (createdRecord) {
-            setStatus("success");
-        } else {
-            setStatus("error");
-            setErrorMessage("Không thể tạo yêu cầu. Vui lòng thử lại.");
-        }
+        window.location.href = "/thanh-toan";
     };
 
-    if (status === "success") {
-        return (
-            <div className="text-center py-8 bg-green-50 rounded-xl border border-green-200">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl">✓</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Đặt hàng thành công!</h3>
-                <p className="text-gray-600 mb-4">Shop sẽ liên hệ bạn qua Zalo trong ít phút.</p>
-                <div className="flex flex-col gap-3 items-center">
-                    <a
-                        href="https://zalo.me/0868127491"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            window.open('https://zalo.me/0868127491', '_blank', 'noopener,noreferrer');
-                        }}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-all inline-flex items-center gap-2"
-                    >
-                        <MessageCircle className="h-5 w-5" />
-                        Liên hệ Zalo ngay
-                    </a>
-                    <button
-                        onClick={() => setStatus("idle")}
-                        className="text-blue-600 hover:underline font-medium"
-                    >
-                        Đặt thêm gói khác
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="space-y-6">
-            {/* Plan Selection - Grid Cards */}
+        <div className="space-y-5">
+            {/* Plan Selection */}
             <div>
                 <label className="text-sm font-bold text-gray-700 mb-3 block">
-                    Chu kỳ (Tháng)
+                    Chọn gói dịch vụ
                 </label>
 
-                <div className="grid grid-cols-3 gap-2 max-w-md">
-                    {plans.map((plan) => (
-                        <button
-                            key={plan.id}
-                            type="button"
-                            onClick={() => setSelectedPlan(plan)}
-                            className={`px-1 h-12 rounded-2xl border-2 transition-all text-center flex items-center justify-center ${selectedPlan?.id === plan.id
-                                ? "border-blue-500 bg-blue-50"
-                                : "border-gray-200 bg-white hover:border-blue-300"
-                                }`}
-                        >
-                            <p className="text-gray-900 text-xs">
-                                <span className="font-semibold">{plan.label}</span>
-                                <span> - </span>
-                                <span className="text-blue-600 font-bold">{plan.price.toLocaleString("vi-VN")}đ</span>
-                            </p>
-                        </button>
-                    ))}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {plans.map((plan) => {
+                        const outOfStock = (plan as any).inStock === false;
+                        return (
+                            <button
+                                key={plan.id}
+                                type="button"
+                                onClick={() => !outOfStock && setSelectedPlan(plan)}
+                                disabled={outOfStock}
+                                className={`relative px-3 py-3 rounded-xl border-2 transition-all text-center ${outOfStock
+                                    ? "border-gray-200 bg-gray-100 opacity-60 cursor-not-allowed"
+                                    : selectedPlan?.id === plan.id
+                                        ? "border-blue-500 bg-blue-50 shadow-md shadow-blue-100"
+                                        : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50/50"
+                                    }`}
+                            >
+                                {outOfStock && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200/60 rounded-xl z-10">
+                                        <span className="bg-red-500 text-white text-[11px] font-black px-3 py-1 rounded-full">
+                                            Hết hàng
+                                        </span>
+                                    </div>
+                                )}
+                                {!outOfStock && plan.discount && plan.discount > 0 && (
+                                    <span className="absolute -top-2 -right-2 px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full">
+                                        -{plan.discount}%
+                                    </span>
+                                )}
+                                <p className="font-bold text-sm text-gray-900">
+                                    {plan.label}
+                                </p>
+                                <p className={`text-base font-extrabold mt-1 ${outOfStock ? "text-gray-400" : selectedPlan?.id === plan.id ? "text-blue-600" : "text-red-600"
+                                    }`}>
+                                    {plan.price.toLocaleString("vi-VN")}đ
+                                </p>
+                                {plan.originalPrice && (
+                                    <p className="text-[11px] text-gray-400 line-through mt-0.5">
+                                        {plan.originalPrice.toLocaleString("vi-VN")}đ
+                                    </p>
+                                )}
+                                {(plan as any).description && (
+                                    <p className="text-[11px] text-teal-700 font-medium mt-1.5 leading-snug text-center">
+                                        {(plan as any).description}
+                                    </p>
+                                )}
+                                {plan.bonus && (
+                                    <p className="text-[10px] text-emerald-600 font-semibold mt-1">
+                                        {plan.bonus}
+                                    </p>
+                                )}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 
-            {/* Note Input */}
-            <div>
-                <label className="text-sm font-bold text-gray-700 mb-2 block">
-                    Ghi chú
-                </label>
-                <textarea
-                    rows={3}
-                    placeholder="Nhập Gmail Cần Đăng Ký Gói Youtube Premium của bạn (Không yêu cầu Password) - Gia Hạn Vui Lòng Note Mail + Gia Hạn Để Tránh Bị Lỗi Mail - Ví Dụ: aaa@gmail.com gia hạn"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:border-blue-500 focus:bg-white focus:outline-none transition-all resize-none text-sm"
-                    value={formData.note}
-                    onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-                />
-            </div>
 
             {/* Total & Submit */}
-            <div className="border-t pt-4">
+            <div className="border-t border-gray-200 pt-4">
                 <div className="flex items-center justify-between mb-4">
-                    <span className="text-gray-700 font-bold">Tổng thanh toán</span>
-                    <span className="text-2xl font-bold text-red-500">
+                    <span className="font-bold text-gray-700">Tổng thanh toán</span>
+                    <span className="text-2xl font-extrabold text-red-600">
                         {selectedPlan ? selectedPlan.price.toLocaleString("vi-VN") : 0}đ
                     </span>
                 </div>
@@ -173,7 +147,7 @@ export default function ProductOrderSection({
                         type="button"
                         onClick={handleAddToCart}
                         disabled={!selectedPlan}
-                        className="bg-red-50 hover:bg-red-100 border-2 border-red-200 hover:border-red-300 text-red-700 disabled:bg-gray-300 disabled:border-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                        className="bg-white hover:bg-red-50 border-2 border-red-200 hover:border-red-300 text-red-700 disabled:opacity-40 disabled:cursor-not-allowed font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
                     >
                         <Plus className="h-5 w-5" />
                         Thêm vào giỏ
@@ -181,25 +155,19 @@ export default function ProductOrderSection({
 
                     <button
                         type="button"
-                        onClick={handleSubmit}
-                        disabled={status === "loading" || !selectedPlan}
-                        className="bg-red-600 hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                        onClick={handleBuyNow}
+                        disabled={!selectedPlan}
+                        className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl shadow-lg shadow-red-200 hover:shadow-red-300 transition-all flex items-center justify-center gap-2"
                     >
-                        {status === "loading" ? (
-                            <Loader2 className="h-5 w-5 animate-spin" />
-                        ) : (
-                            <>
-                                <ShoppingCart className="h-5 w-5" />
-                                Thanh Toán
-                            </>
-                        )}
+                        <ShoppingCart className="h-5 w-5" />
+                        Mua Ngay
                     </button>
                 </div>
             </div>
 
-            {/* Toast Notification */}
+            {/* Toast */}
             {showToast && (
-                <div className="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 animate-slide-up">
+                <div className="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up">
                     <ShoppingCart className="h-5 w-5" />
                     <span className="font-semibold">Đã thêm vào giỏ hàng!</span>
                 </div>

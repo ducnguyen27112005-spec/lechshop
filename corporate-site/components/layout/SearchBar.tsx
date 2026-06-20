@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { products, premiumProducts, socialServices } from "@/content/products";
+import { getProductsConfig, fetchProductsConfig, ProductConfig } from "@/lib/product-config";
 
 interface SearchResult {
     id: string;
@@ -14,11 +15,31 @@ interface SearchResult {
     image?: string;
 }
 
-export default function SearchBar() {
+interface SearchBarProps {
+    placeholder?: string;
+}
+
+export default function SearchBar({
+    placeholder = "Tìm kiếm tài khoản, khoá học, phần mềm..."
+}: SearchBarProps) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<SearchResult[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [adminProducts, setAdminProducts] = useState<ProductConfig[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Load admin products from server
+    useEffect(() => {
+        const loadAdminProducts = () => {
+            const config = getProductsConfig();
+            setAdminProducts(config.products || []);
+        };
+        fetchProductsConfig().then(loadAdminProducts);
+        window.addEventListener("products-config-updated", loadAdminProducts);
+        return () => {
+            window.removeEventListener("products-config-updated", loadAdminProducts);
+        };
+    }, []);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -41,10 +62,30 @@ export default function SearchBar() {
 
         const searchTerm = query.toLowerCase().trim();
         const found: SearchResult[] = [];
+        const seenSlugs = new Set<string>();
 
-        // Search in products (full details)
-        products.forEach((p) => {
+        // Search in admin products first (source of truth)
+        adminProducts.forEach((p) => {
             if (p.name.toLowerCase().includes(searchTerm)) {
+                seenSlugs.add(p.slug);
+                const lowestPrice = p.plans.length > 0
+                    ? Math.min(...p.plans.map(pl => pl.price))
+                    : 0;
+                found.push({
+                    id: p.id,
+                    slug: p.slug,
+                    title: p.name,
+                    type: "product",
+                    price: lowestPrice > 0 ? lowestPrice.toLocaleString("vi-VN") + "đ" : undefined,
+                    image: p.image,
+                });
+            }
+        });
+
+        // Search in hardcoded products (skip if already found from admin)
+        products.forEach((p) => {
+            if (!seenSlugs.has(p.slug) && p.name.toLowerCase().includes(searchTerm)) {
+                seenSlugs.add(p.slug);
                 found.push({
                     id: p.id,
                     slug: p.slug,
@@ -56,9 +97,10 @@ export default function SearchBar() {
             }
         });
 
-        // Search in premium products (if not already found)
+        // Search in premium products (skip if already found)
         premiumProducts.forEach((p) => {
-            if (p.title.toLowerCase().includes(searchTerm) && !found.find(f => f.id === p.id)) {
+            if (!seenSlugs.has(p.slug) && p.title.toLowerCase().includes(searchTerm)) {
+                seenSlugs.add(p.slug);
                 found.push({
                     id: p.id,
                     slug: p.slug,
@@ -83,9 +125,9 @@ export default function SearchBar() {
             }
         });
 
-        setResults(found.slice(0, 6));
+        setResults(found.slice(0, 8));
         setIsOpen(found.length > 0 || query.length >= 2);
-    }, [query]);
+    }, [query, adminProducts]);
 
     const clearSearch = () => {
         setQuery("");
@@ -101,7 +143,7 @@ export default function SearchBar() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => query.length >= 2 && setIsOpen(true)}
-                    placeholder="Tìm kiếm tài khoản, khoá học, phần mềm..."
+                    placeholder={placeholder}
                     className="w-full h-12 pl-5 pr-24 rounded-full bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md transition-shadow focus:shadow-lg"
                 />
                 <div className="absolute right-2 top-0 h-12 flex items-center gap-2">

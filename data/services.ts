@@ -26,7 +26,7 @@ export type Service = {
 export const services: Service[] = [
     {
         slug: "tiktok",
-        title: "Dịch vụ TikTok",
+        title: "Tiktok",
         description: "Tổng hợp các dịch vụ TikTok: Tăng Follow, Tim, View, Comment, Share... uy tín và chất lượng.",
         category: "TikTok Global",
         image: "/images/TT tik tok.png",
@@ -37,7 +37,7 @@ export const services: Service[] = [
     // --- NEW SERVICES ---
     {
         slug: "facebook",
-        title: "Tăng Follow Facebook",
+        title: "Facebook",
         description: "Tăng người theo dõi profile/page Facebook, tạo uy tín cho tài khoản bán hàng.",
         category: "Facebook",
         image: "/images/tt face.png",
@@ -47,7 +47,7 @@ export const services: Service[] = [
     },
     {
         slug: "instagram",
-        title: "Tăng Follow Instagram",
+        title: "Instagram",
         description: "Tăng follow Instagram chất lượng, giúp tài khoản nổi bật và trust hơn.",
         category: "Instagram",
         image: "/images/TT intargram.png",
@@ -57,7 +57,7 @@ export const services: Service[] = [
     },
     {
         slug: "youtube",
-        title: "Tăng Subscribe Youtube",
+        title: "Youtube",
         description: "Tăng đăng ký kênh Youtube, giúp kênh sớm bật kiếm tiền (BKT).",
         category: "YouTube",
         image: "/images/tăng ytb.jfif",
@@ -67,7 +67,7 @@ export const services: Service[] = [
     },
     {
         slug: "google-maps",
-        title: "Review Google Maps",
+        title: "Googe Maps",
         description: "Tăng đánh giá 5 sao Google Maps, đẩy SEO local và uy tín doanh nghiệp.",
         category: "Khác",
         image: "/images/TT GG map 5s.png",
@@ -77,7 +77,7 @@ export const services: Service[] = [
     },
     {
         slug: "threads",
-        title: "Tăng Follow Threads",
+        title: "Threads",
         description: "Dịch vụ tăng follow mạng xã hội Threads mới nhất của Meta.",
         category: "Khác",
         image: "/images/TT threas.png",
@@ -87,7 +87,7 @@ export const services: Service[] = [
     },
     {
         slug: "shopee",
-        title: "Dịch vụ Shopee",
+        title: "Shopee",
         description: "Tăng follow shop, like sản phẩm, đặt đơn ảo Shopee uy tín.",
         category: "Khác",
         image: "/images/TT shoppe.png",
@@ -97,31 +97,31 @@ export const services: Service[] = [
     },
     {
         slug: "spotify",
-        title: "Dịch vụ Spotify",
-        description: "Tăng play, follow playlist/artist Spotify.",
+        title: "Spotify",
+        description: "Dịch vụ tăng follow, play, stream Spotify chuyên nghiệp.",
         category: "Khác",
         image: "/images/TT spotify.png",
-        inputLabel: "Nhập Link Artist/Track",
+        inputLabel: "Nhập Link Track/Playlist/Artist",
         inputPlaceholder: "https://open.spotify.com/...",
         plans: []
     },
     {
         slug: "website-traffic",
-        title: "Tăng Traffic Website",
-        description: "Tăng truy cập website từ nguồn tự nhiên, mạng xã hội, hỗ trợ SEO.",
+        title: "Website Traffic",
+        description: "Tăng lượng truy cập thật cho Website, cải thiện thứ hạng SEO.",
         category: "Khác",
         image: "/images/TT traffic web.png",
         inputLabel: "Nhập Link Website",
-        inputPlaceholder: "https://website.com",
+        inputPlaceholder: "https://...",
         plans: []
     },
     {
         slug: "twitter",
-        title: "Tăng Follow Twitter (X)",
-        description: "Tăng người theo dõi Twitter (X) Global/Việt.",
+        title: "Twitter",
+        description: "Tăng follow, like, retweet trên X (Twitter).",
         category: "Khác",
         image: "/images/TT twitter X.png",
-        inputLabel: "Nhập Link Profile",
+        inputLabel: "Nhập Link Profile/Tweet",
         inputPlaceholder: "https://twitter.com/...",
         plans: []
     }

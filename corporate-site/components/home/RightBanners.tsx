@@ -1,36 +1,40 @@
 "use client";
 
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const banners = [
-    {
-        id: 1,
-        image: "/images/gemini-sidebar-2.png",
-        alt: "Gemini Advanced",
-        href: "/san-pham/google-gemini",
-    },
-    {
-        id: 2,
-        image: "/images/chatgpt-sidebar-2.jpg",
-        alt: "ChatGPT Plus",
-        href: "/san-pham/chatgpt-plus-kham-pha",
-    }
-];
+import { getBannerConfig, BannerItem } from "@/lib/banner-config";
 
 export default function RightBanners() {
+    const [banners, setBanners] = useState<BannerItem[]>([]);
+
+    useEffect(() => {
+        const config = getBannerConfig();
+        setBanners(config.sideBanners);
+
+        const handleUpdate = () => {
+            const updated = getBannerConfig();
+            setBanners(updated.sideBanners);
+        };
+        window.addEventListener("banner-config-updated", handleUpdate);
+        return () => window.removeEventListener("banner-config-updated", handleUpdate);
+    }, []);
+
+    if (banners.length === 0) return null;
+
     return (
-        <div className="flex flex-col h-full gap-4">
-            {banners.map((banner) => (
+        <div className="flex flex-col h-full gap-3">
+            {banners.map((banner, index) => (
                 <Link
-                    key={banner.id}
-                    href={banner.href}
-                    className="relative flex-1 overflow-hidden rounded-lg group h-1/2 min-h-[140px]"
+                    key={index}
+                    href={banner.link || "#"}
+                    className="relative flex-1 overflow-hidden rounded-xl group h-1/2 min-h-[140px] shadow-sm border border-gray-100"
                 >
                     <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                         style={{ backgroundImage: `url(${banner.image})` }}
                     />
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                 </Link>
             ))}
         </div>

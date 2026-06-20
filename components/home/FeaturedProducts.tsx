@@ -4,6 +4,7 @@ import SectionHeading from "../shared/SectionHeading";
 import { routes } from "@/lib/routes";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { getDeterministicSoldCount } from "@/lib/utils";
 
 export default function FeaturedProducts() {
     return (
@@ -48,7 +49,7 @@ export default function FeaturedProducts() {
                                             {product.pricing[0].price}
                                         </p>
                                         <p className="text-[10px] text-gray-500">
-                                            {Math.floor(Math.random() * 500) + 100} đã bán
+                                            {getDeterministicSoldCount(product.slug, "")} đã bán
                                         </p>
                                     </div>
 

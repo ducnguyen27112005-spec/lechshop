@@ -97,6 +97,10 @@ export default function RequestModal({
             serviceName,
             note: formData.note,
             status: "new" as const,
+            orderCode: `DUMMY-${Math.floor(Math.random() * 10000)}`, // Dummy for missing props
+            products: [{ name: serviceName, quantity: 1, price: selectedPlan?.price || 0, planLabel: selectedPlan?.label || "" }],
+            totalAmount: selectedPlan?.price || 0,
+            paymentMethod: "Chuyển khoản (Mock)",
         };
 
         const createdRecord = await createCustomerRequest(payload);

@@ -5,6 +5,16 @@ export interface CartItem {
     quantity: number;
     image?: string;
     planLabel?: string;
+
+    // Service fields
+    slug?: string;
+    title?: string;
+    planId?: string;
+    planName?: string;
+    unitPrice?: number;
+    totalPrice?: number;
+    inputValue?: string; // Link/UID
+    note?: string;
 }
 
 export interface CartContextType {

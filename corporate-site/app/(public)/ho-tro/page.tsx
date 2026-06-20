@@ -55,10 +55,10 @@ export default function SupportPage() {
                         </div>
                         <h3 className="font-semibold text-gray-900 mb-2">Email</h3>
                         <a
-                            href="mailto:lechshopcskh@gmail.com"
+                            href="mailto:lechshop.cskh@gmail.com"
                             className="text-blue-600 hover:text-blue-700 hover:underline"
                         >
-                            lechshopcskh@gmail.com
+                            lechshop.cskh@gmail.com
                         </a>
                         <p className="text-sm text-gray-500 mt-2">Reply in 2 hours</p>
                     </Card>

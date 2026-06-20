@@ -6,8 +6,8 @@ import Footer from "@/components/layout/Footer";
 import FloatingContactBar from "@/components/shared/FloatingContactBar";
 
 export const metadata: Metadata = {
-    title: "TechCorp Services | Netflix & ChatGPT Plus",
-    description: "Hỗ trợ đăng ký Netflix, ChatGPT Plus chính hãng, uy tín",
+    title: "LechShop - Mua Netflix, ChatGPT Plus, Canva Pro, Gemini Pro Giá Rẻ",
+    description: "Chuyên cung cấp tài khoản Netflix, ChatGPT Plus, Canva Pro, Google Gemini, Microsoft 365 giá rẻ. Giao nhanh, hỗ trợ 24/7, bảo hành uy tín.",
 };
 
 export default function PublicLayout({

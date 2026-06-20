@@ -1,30 +1,29 @@
 import { siteConfig } from "@/content/site";
 import { routes } from "@/lib/routes";
-import { Facebook, Linkedin, Youtube, Mail } from "lucide-react";
+import { Facebook, Linkedin, Youtube, Mail, Clock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import SiteInfo from "@/components/common/SiteInfo";
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-900 text-gray-300">
+        <footer className="bg-[#00b4d8] text-white">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Company Info */}
                     <div className="col-span-1 md:col-span-2">
                         <Link href={routes.home} className="mb-4 block">
                             <Image
-                                src="/images/lechshop-logo-footer-v3.png"
+                                src="/images/lechshop-logo-updated.png"
                                 alt="LECHSHOP Logo"
                                 width={250}
                                 height={75}
                                 className="h-12 w-auto -ml-1"
                             />
                         </Link>
-                        {/* <p className="text-sm mb-4">{siteConfig.description}</p> */}
                         <div className="space-y-2 text-sm">
                             <p>
-                                <strong>Địa chỉ:</strong> <SiteInfo type="address" fallback={siteConfig.address} />
+                                <strong>Thời gian làm việc:</strong> <SiteInfo type="workingHours" fallback="8:00 - 22:00 (Thứ 2 - Chủ Nhật)" />
                             </p>
                             <p>
                                 <strong>Hotline:</strong>{" "}
@@ -103,7 +102,7 @@ export default function Footer() {
                 </div>
 
                 {/* Social Links */}
-                <div className="mt-8 pt-8 border-t border-gray-800">
+                <div className="mt-8 pt-8 border-t border-white/20">
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                         <p className="text-sm">
                             © 2026 <SiteInfo type="name" fallback={siteConfig.name} />. All rights reserved.

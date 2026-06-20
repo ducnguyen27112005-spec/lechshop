@@ -2,11 +2,16 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export interface CustomerRequestPayload {
     fullName: string;
+    email?: string;
     contact: string; // SĐT / Zalo
     serviceType: 'premium' | 'social';
     serviceName: string;
+    orderCode: string;
+    products: any[];
+    totalAmount: number;
+    paymentMethod: string;
     note?: string;
-    status: 'new' | 'done';
+    status: 'new' | 'done' | 'paid' | 'shipped' | 'cancelled';
 }
 
 export async function createCustomerRequest(payload: CustomerRequestPayload) {
@@ -19,9 +24,14 @@ export async function createCustomerRequest(payload: CustomerRequestPayload) {
             body: JSON.stringify({
                 data: {
                     fullName: payload.fullName,
+                    email: payload.email,
                     contact: payload.contact,
                     serviceType: payload.serviceType,
                     serviceName: payload.serviceName,
+                    orderCode: payload.orderCode,
+                    products: payload.products,
+                    totalAmount: payload.totalAmount,
+                    paymentMethod: payload.paymentMethod,
                     note: payload.note || "",
                     status: payload.status || "new",
                 }

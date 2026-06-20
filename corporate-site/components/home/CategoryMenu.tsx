@@ -25,28 +25,27 @@ import Link from "next/link";
 const categories = [
     { name: "Giải trí cao cấp", icon: Gamepad2, href: "/danh-muc/giai-tri" },
     { name: "Công cụ AI thông minh", icon: Bot, href: "/danh-muc/cong-cu-ai" },
-    { name: "Sáng tạo nội dung", icon: Palette, href: "/danh-muc/sang-tao" },
-    { name: "Làm việc & Văn phòng", icon: Briefcase, href: "/danh-muc/lam-viec" },
-    { name: "Học tập & Nghiên cứu", icon: GraduationCap, href: "/danh-muc/hoc-tap" },
-    { name: "Kinh doanh & Marketing", icon: LayoutTemplate, href: "/danh-muc/marketing" },
+    { name: "Thiết kế & Đồ họa", icon: Palette, href: "/danh-muc/sang-tao-noi-dung" },
+    { name: "Làm việc & Văn phòng", icon: Briefcase, href: "/danh-muc/lam-viec-van-phong" },
+    { name: "Học tập & Nghiên cứu", icon: GraduationCap, href: "/danh-muc/hoc-tap-nghien-cuu" },
+    { name: "Kinh doanh & Marketing", icon: LayoutTemplate, href: "/danh-muc/kinh-doanh-marketing" },
     { name: "Tăng tương tác MXH", icon: ThumbsUp, href: "/danh-muc/mxh" },
     { name: "Phần mềm", icon: HardDrive, href: "/danh-muc/phan-mem" },
-    { name: "Dịch vụ bán chạy", icon: Zap, href: "/danh-muc/ban-chay" },
-    { name: "Các sản phẩm khác", icon: Plus, href: "/danh-muc/khac" },
+    { name: "Dịch vụ bán chạy", icon: Zap, href: "/danh-muc/dich-vu-ban-chay" },
 ];
 
 export default function CategoryMenu() {
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 h-full py-2">
-            <ul className="space-y-1">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 h-full py-1.5 overflow-hidden">
+            <ul>
                 {categories.map((item, index) => (
-                    <li key={index}>
+                    <li key={index} className="group">
                         <Link
                             href={item.href}
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-600 transition-all duration-200"
                         >
-                            <item.icon className="w-5 h-5 text-gray-400 group-hover:text-blue-600" />
-                            <span className="font-medium">{item.name}</span>
+                            <item.icon className="w-[18px] h-[18px] text-gray-400 group-hover:text-blue-500 transition-colors duration-200 shrink-0" />
+                            <span className="font-medium truncate">{item.name}</span>
                         </Link>
                     </li>
                 ))}

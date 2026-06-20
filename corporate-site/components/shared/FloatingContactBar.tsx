@@ -1,9 +1,10 @@
 "use client";
 
-import { siteConfig } from "@/content/site";
+import { useSiteConfig } from "@/hooks/use-site-config";
 import { useEffect, useState } from "react";
 
 export default function FloatingContactBar() {
+    const config = useSiteConfig();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -16,7 +17,7 @@ export default function FloatingContactBar() {
         <div className="fixed right-4 bottom-8 z-50 flex flex-col gap-6">
             {/* Messenger Button */}
             <a
-                href={siteConfig.social.facebook}
+                href={config.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center justify-center w-11 h-11 rounded-full bg-blue-500 text-white shadow-xl transition-transform hover:scale-110 animate-wiggle"
@@ -33,7 +34,7 @@ export default function FloatingContactBar() {
 
             {/* Zalo Button */}
             <a
-                href={siteConfig.social.zalo}
+                href={config.social.zalo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center justify-center w-11 h-11 rounded-full bg-[#0068FF] text-white shadow-xl transition-transform hover:scale-110 animate-wiggle"
@@ -51,7 +52,7 @@ export default function FloatingContactBar() {
 
             {/* Phone Button */}
             <a
-                href={`tel:${siteConfig.phone}`}
+                href={`tel:${config.phone}`}
                 className="group relative flex items-center justify-center w-11 h-11 rounded-full bg-red-600 text-white shadow-xl transition-transform hover:scale-110 animate-wiggle"
                 style={{ animationDelay: "0.4s" }}
             >

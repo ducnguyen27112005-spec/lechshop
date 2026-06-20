@@ -36,7 +36,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 // Item exists, increase quantity
                 return prevItems.map((item) =>
                     item.id === newItem.id
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, ...newItem, quantity: item.quantity + 1 }
                         : item
                 );
             } else {

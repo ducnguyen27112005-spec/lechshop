@@ -1,28 +1,29 @@
 "use client";
 
-import { siteConfig } from "@/content/site";
+import { useSiteConfig } from "@/hooks/use-site-config";
 import { Facebook, Linkedin, Youtube, Mail, Phone, MessageCircle } from "lucide-react";
 import React from "react";
 
-const icons = [
-    {
-        icon: <Facebook className="h-5 w-5" />,
-        label: "Facebook",
-        href: siteConfig.social.facebook,
-    },
-    {
-        icon: <Phone className="h-5 w-5" />,
-        label: "Hotline",
-        href: `tel:${siteConfig.phone}`,
-    },
-    {
-        icon: <MessageCircle className="h-5 w-5" />,
-        label: "Zalo",
-        href: siteConfig.social.zalo,
-    },
-];
-
 export default function HeroContactIcons() {
+    const config = useSiteConfig();
+
+    const icons = [
+        {
+            icon: <Facebook className="h-5 w-5" />,
+            label: "Facebook",
+            href: config.social.facebook,
+        },
+        {
+            icon: <Phone className="h-5 w-5" />,
+            label: "Hotline",
+            href: `tel:${config.phone}`,
+        },
+        {
+            icon: <MessageCircle className="h-5 w-5" />,
+            label: "Zalo",
+            href: config.social.zalo,
+        },
+    ];
     return (
         <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-[9999] flex flex-col gap-3">
             {icons.map((item, index) => (

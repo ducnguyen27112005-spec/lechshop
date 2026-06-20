@@ -8,6 +8,7 @@ import Card from "@/components/shared/Card";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import RequestForm from "@/components/common/RequestForm";
 import { siteConfig } from "@/content/site";
+import SiteInfo from "@/components/common/SiteInfo";
 
 function ContactFormSection() {
     const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ function ContactFormSection() {
                         <div className="flex-1">
                             <h3 className="font-bold text-gray-900 mb-1">Địa chỉ</h3>
                             <p className="text-gray-600 leading-relaxed">
-                                {siteConfig.address}
+                                <SiteInfo type="address" fallback={siteConfig.address} />
                             </p>
                         </div>
                     </div>
@@ -41,7 +42,9 @@ function ContactFormSection() {
                         </div>
                         <div className="flex-1">
                             <h3 className="font-bold text-gray-900 mb-1">Điện thoại</h3>
-                            <p className="text-gray-600">Hotline: {siteConfig.phone}</p>
+                            <p className="text-gray-600">
+                                Hotline: <SiteInfo type="phone" fallback={siteConfig.phone} />
+                            </p>
                             <p className="text-sm text-gray-500 mt-1 italic">Hỗ trợ 24/7 qua Zalo & Phone</p>
                         </div>
                     </div>
@@ -54,7 +57,9 @@ function ContactFormSection() {
                         </div>
                         <div className="flex-1">
                             <h3 className="font-bold text-gray-900 mb-1">Email</h3>
-                            <p className="text-gray-600">{siteConfig.email}</p>
+                            <p className="text-gray-600">
+                                <SiteInfo type="email" fallback={siteConfig.email} />
+                            </p>
                         </div>
                     </div>
                 </Card>
@@ -67,8 +72,8 @@ function ContactFormSection() {
                         <div className="flex-1">
                             <h3 className="font-bold mb-1">Giờ làm việc</h3>
                             <p className="text-blue-50 leading-relaxed text-sm">
-                                Thứ 2 - Thứ 6: 08:00 - 18:00 <br />
-                                Thứ 7: 08:00 - 12:00 <br />
+                                <SiteInfo type="workingHours" fallback="Thứ 2 - Thứ 6: 08:00 - 18:00" />
+                                <br />
                                 <span className="font-semibold text-white">Hỗ trợ Zalo/Messager: 24/7</span>
                             </p>
                         </div>
@@ -101,7 +106,7 @@ export default function ContactPage() {
                     className="mb-12"
                 />
 
-                <Suspense fallback={<div className="text-center py-12">Đang tải...</div>}>
+                <Suspense fallback={<div className="text-center py-20">Đang tải...</div>}>
                     <ContactFormSection />
                 </Suspense>
             </Container>

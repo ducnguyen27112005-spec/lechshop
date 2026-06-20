@@ -6,28 +6,29 @@ import RightBanners from "@/components/home/RightBanners";
 export default function Home() {
   return (
     <>
-      {/* Visual Separator */}
-      <div className="border-t border-gray-200"></div>
+      {/* Hero Area */}
+      <section className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-100">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Left Column: Categories */}
+            <div className="hidden lg:block lg:col-span-2">
+              <CategoryMenu />
+            </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Left Column: Categories */}
-          <div className="hidden lg:block lg:col-span-2">
-            <CategoryMenu />
-          </div>
+            {/* Center Column: Main Slider */}
+            <div className="lg:col-span-8">
+              <HeroSlider />
+            </div>
 
-          {/* Center Column: Main Slider */}
-          <div className="lg:col-span-8">
-            <HeroSlider />
-          </div>
-
-          {/* Right Column: Promotional Banners */}
-          <div className="hidden lg:block lg:col-span-2">
-            <RightBanners />
+            {/* Right Column: Promotional Banners */}
+            <div className="hidden lg:block lg:col-span-2">
+              <RightBanners />
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
+      {/* Products */}
       <ProductSections />
     </>
   );

@@ -6,6 +6,23 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import Link from "next/link";
 import Image from "next/image";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { products, premiumProducts, socialServices } from "@/content/products";
+
+const getProductImage = (itemName: string, storedImage?: string) => {
+    // Try to find in standard products
+    const product = products.find(p => p.name === itemName);
+    if (product?.image) return product.image;
+
+    // Try to find in premium products
+    const premium = premiumProducts.find(p => p.title === itemName);
+    if (premium?.image) return premium.image;
+
+    // Try to find in social services
+    const social = socialServices.find(s => s.title === itemName);
+    if (social?.image) return social.image;
+
+    return storedImage; // Fallback to stored image if not found
+};
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
@@ -41,69 +58,72 @@ export default function CartPage() {
             <div className="grid lg:grid-cols-3 gap-8 mt-8">
                 {/* Cart Items */}
                 <div className="lg:col-span-2 space-y-4">
-                    {items.map((item) => (
-                        <div
-                            key={item.id}
-                            className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex gap-4"
-                        >
-                            {/* Product Image */}
-                            {item.image && (
-                                <div className="relative h-24 w-24 flex-shrink-0 rounded-md overflow-hidden bg-gray-100">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            )}
-
-                            {/* Product Info */}
-                            <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
-                                {item.planLabel && (
-                                    <p className="text-sm text-gray-600 mb-2">{item.planLabel}</p>
+                    {items.map((item) => {
+                        const displayImage = getProductImage(item.name, item.image);
+                        return (
+                            <div
+                                key={item.id}
+                                className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex gap-4"
+                            >
+                                {/* Product Image */}
+                                {item.image && (
+                                    <div className="relative h-24 w-24 flex-shrink-0 rounded-md overflow-hidden bg-gray-100">
+                                        <Image
+                                            src={displayImage!}
+                                            alt={item.name}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
                                 )}
-                                <p className="text-lg font-bold text-blue-600">
-                                    {item.price.toLocaleString('vi-VN')}đ
-                                </p>
-                            </div>
 
-                            {/* Quantity Controls */}
-                            <div className="flex flex-col items-end gap-3">
-                                <button
-                                    onClick={() => removeItem(item.id)}
-                                    className="text-red-500 hover:text-red-600 transition-colors p-1"
-                                    title="Xóa"
-                                >
-                                    <Trash2 className="h-5 w-5" />
-                                </button>
-
-                                <div className="flex items-center gap-2 border border-gray-300 rounded-lg">
-                                    <button
-                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        className="p-2 hover:bg-gray-100 transition-colors"
-                                        disabled={item.quantity <= 1}
-                                    >
-                                        <Minus className="h-4 w-4" />
-                                    </button>
-                                    <span className="px-3 font-semibold min-w-[2rem] text-center">
-                                        {item.quantity}
-                                    </span>
-                                    <button
-                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        className="p-2 hover:bg-gray-100 transition-colors"
-                                    >
-                                        <Plus className="h-4 w-4" />
-                                    </button>
+                                {/* Product Info */}
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
+                                    {item.planLabel && (
+                                        <p className="text-sm text-gray-600 mb-2">{item.planLabel}</p>
+                                    )}
+                                    <p className="text-lg font-bold text-blue-600">
+                                        {item.price.toLocaleString('vi-VN')}đ
+                                    </p>
                                 </div>
 
-                                <p className="text-sm font-medium text-gray-700">
-                                    Tổng: {(item.price * item.quantity).toLocaleString('vi-VN')}đ
-                                </p>
+                                {/* Quantity Controls */}
+                                <div className="flex flex-col items-end gap-3">
+                                    <button
+                                        onClick={() => removeItem(item.id)}
+                                        className="text-red-500 hover:text-red-600 transition-colors p-1"
+                                        title="Xóa"
+                                    >
+                                        <Trash2 className="h-5 w-5" />
+                                    </button>
+
+                                    <div className="flex items-center gap-2 border border-gray-300 rounded-lg">
+                                        <button
+                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                            className="p-2 hover:bg-gray-100 transition-colors"
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            <Minus className="h-4 w-4" />
+                                        </button>
+                                        <span className="px-3 font-semibold min-w-[2rem] text-center">
+                                            {item.quantity}
+                                        </span>
+                                        <button
+                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                            className="p-2 hover:bg-gray-100 transition-colors"
+                                        >
+                                            <Plus className="h-4 w-4" />
+                                        </button>
+                                    </div>
+
+                                    <p className="text-sm font-medium text-gray-700">
+                                        Tổng: {(item.price * item.quantity).toLocaleString('vi-VN')}đ
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* Order Summary */}
@@ -123,7 +143,7 @@ export default function CartPage() {
                         </div>
 
                         <Link
-                            href="/lien-he"
+                            href="/thanh-toan"
                             className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-3"
                         >
                             Tiến hành đặt hàng
