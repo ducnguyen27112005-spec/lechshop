@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { premiumProducts, CompactProduct } from "@/content/products";
-import { getProductsConfig, fetchProductsConfig } from "@/lib/product-config";
+import { getProductsConfig, fetchProductsConfig, fetchPriceMultipliers } from "@/lib/product-config";
 import { categoryMap } from "@/lib/categories";
 import { services } from "@/data/services";
 import Container from "../shared/Container";
 import { ShoppingCart, Zap, HeadphonesIcon, Shield, Flame, BadgeCheck, Award } from "lucide-react";
 import Link from "next/link";
 import DynamicPrice from "../common/DynamicPrice";
+import { getDeterministicSoldCount } from "@/lib/utils";
 
 /** Convert admin ProductConfig[] → CompactProduct[] for homepage display */
 function getHomepageProducts(): CompactProduct[] {
-    const config = getProductsConfig();
+    const config = getProductsConfig(true);
     return config.products.map((p) => {
         const lowestPrice = p.plans.length > 0
             ? Math.min(...p.plans.map((pl) => pl.price))
@@ -28,7 +29,7 @@ function getHomepageProducts(): CompactProduct[] {
             bullets: [p.shortDesc],
             startingPrice: formatted,
             originalPrice: p.originalPrice || undefined,
-            soldCount: `${Math.floor(Math.random() * 500) + 100}`,
+            soldCount: `${getDeterministicSoldCount(p.slug, p.category)}`,
             image: p.image,
         };
     });
@@ -44,14 +45,48 @@ function getDiscountPercent(original?: string, current?: string): number | null 
 }
 
 export default function ProductSections() {
-    const [displayProducts, setDisplayProducts] = useState<CompactProduct[]>(premiumProducts);
+    const [displayProducts, setDisplayProducts] = useState<CompactProduct[]>([]);
 
     useEffect(() => {
-        fetchProductsConfig().then(() => {
-            setDisplayProducts(getHomepageProducts());
+        // Hiển thị mảng rỗng ban đầu (hoặc skeleton nếu có)
+        setDisplayProducts([]);
+
+        let apiProductsCache: CompactProduct[] = [];
+
+        const updateDisplay = () => {
+            const localProducts = getHomepageProducts();
+            if (apiProductsCache.length > 0) {
+                // API products take priority — filter out local products whose slug already exists in API
+                const apiSlugs = new Set(apiProductsCache.map(p => p.slug));
+                const uniqueLocalProducts = localProducts.filter(p => !apiSlugs.has(p.slug));
+                setDisplayProducts([...uniqueLocalProducts, ...apiProductsCache]);
+            } else {
+                setDisplayProducts(localProducts);
+            }
+        };
+
+        const loadProducts = async () => {
+            try {
+                const { fetchThatimProducts, mapThatimToCompactProducts } = await import("@/lib/api/thatim");
+                const apiProducts = await fetchThatimProducts();
+                
+                if (apiProducts && apiProducts.length > 0) {
+                    const mappedProducts = mapThatimToCompactProducts(apiProducts);
+                    apiProductsCache = mappedProducts;
+                    updateDisplay();
+                }
+            } catch (err) {
+                console.error("Lỗi khi gọi API Thatim:", err);
+            }
+        };
+        
+        // Kích hoạt việc fetch — chạy song song để nhanh hơn
+        Promise.all([fetchProductsConfig(), fetchPriceMultipliers()]).then(() => {
+            updateDisplay();
+            loadProducts();
         });
 
-        const handleUpdate = () => setDisplayProducts(getHomepageProducts());
+        const handleUpdate = () => updateDisplay();
         window.addEventListener("products-config-updated", handleUpdate);
         return () => {
             window.removeEventListener("products-config-updated", handleUpdate);
@@ -118,7 +153,7 @@ export default function ProductSections() {
                         </p>
 
                         {/* Product Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                             {displayProducts.map((product) => {
                                 const BadgeIcon = product.badge ? badgeIcons[product.badge] || BadgeCheck : null;
                                 const BenefitIcon = product.benefit ? benefitIcons[product.benefit] || Zap : null;
@@ -151,7 +186,7 @@ export default function ProductSections() {
                                             )}
 
                                             {/* Product Image — fixed height */}
-                                            <div className="h-[180px] relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+                                            <div className="h-[120px] sm:h-[180px] relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
                                                     src={product.image}
@@ -166,14 +201,14 @@ export default function ProductSections() {
                                             </div>
 
                                             {/* Content */}
-                                            <div className="p-4 flex flex-col flex-1">
+                                            <div className="p-2.5 sm:p-4 flex flex-col flex-1">
                                                 {product.category && (
                                                     <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-1 truncate font-medium">
                                                         {product.category}
                                                     </p>
                                                 )}
 
-                                                <h2 className="font-bold text-gray-900 text-sm sm:text-[15px] mb-3 line-clamp-2 leading-snug" itemProp="name">
+                                                <h2 className="font-bold text-gray-900 text-xs sm:text-[15px] mb-2 sm:mb-3 line-clamp-2 leading-snug" itemProp="name">
                                                     {product.title}
                                                 </h2>
 
@@ -189,15 +224,15 @@ export default function ProductSections() {
 
                                                 {/* Price Area */}
                                                 <div className="mt-auto" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                                                    <div className="flex items-baseline gap-2 mb-1">
-                                                        <p className="text-lg sm:text-xl font-extrabold text-red-600 leading-none" itemProp="price">
+                                                    <div className="flex items-baseline gap-1.5 sm:gap-2 mb-1">
+                                                        <p className="text-[13px] sm:text-xl font-extrabold text-red-600 leading-none" itemProp="price">
                                                             <DynamicPrice
                                                                 slug={product.slug}
                                                                 fallback={product.startingPrice}
                                                             />
                                                         </p>
                                                         {product.originalPrice && (
-                                                            <p className="text-xs text-gray-400 line-through">
+                                                            <p className="text-[9px] sm:text-xs text-gray-400 line-through">
                                                                 {product.originalPrice}
                                                             </p>
                                                         )}
@@ -237,7 +272,7 @@ export default function ProductSections() {
                             Tăng trưởng tự nhiên, an toàn — Bảo hành dài hạn
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                             {services.map((service) => (
                                 <Link
                                     href={`/san-pham/${service.slug}`}
@@ -246,7 +281,7 @@ export default function ProductSections() {
                                 >
                                     <article>
                                         {/* Service Image — fixed height */}
-                                        <div className="h-[180px] relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+                                        <div className="h-[120px] sm:h-[180px] relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={service.image || "/images/social-service.jpg"}
@@ -260,35 +295,16 @@ export default function ProductSections() {
                                         </div>
 
                                         {/* Content */}
-                                        <div className="p-4">
+                                        <div className="p-2.5 sm:p-4">
                                             <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-1 font-medium">
                                                 DỊCH VỤ MXH
                                             </p>
 
-                                            <h3 className="font-bold text-gray-900 text-sm sm:text-[15px] mb-3 line-clamp-1 leading-snug">
+                                            <h3 className="font-bold text-gray-900 text-xs sm:text-[15px] mb-2 sm:mb-3 line-clamp-1 leading-snug">
                                                 {service.title}
                                             </h3>
 
-                                            {/* Price */}
-                                            <div className="mb-3">
-                                                <p className="text-lg sm:text-xl font-extrabold text-red-600 leading-none mb-1">
-                                                    {service.plans.length > 0 ? (
-                                                        <DynamicPrice
-                                                            slug={service.slug}
-                                                            fallback={
-                                                                new Intl.NumberFormat('vi-VN', {
-                                                                    style: 'currency',
-                                                                    currency: 'VND',
-                                                                    minimumFractionDigits: 0,
-                                                                }).format(service.plans[0].pricePerUnit) + "/" + service.plans[0].unitLabel
-                                                            }
-                                                        />
-                                                    ) : "Liên hệ"}
-                                                </p>
-                                                <p className="text-[10px] text-gray-400">
-                                                    300+ đã bán
-                                                </p>
-                                            </div>
+                                            {/* Price removed as per user request */}
 
                                             {/* Full-width CTA Button */}
                                             <div

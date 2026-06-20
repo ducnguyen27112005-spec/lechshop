@@ -2,22 +2,22 @@ export const categoryMap: Record<string, { title: string; productIds: string[]; 
     "giai-tri": {
         title: "Giải trí cao cấp",
         description: "Nâng tầm trải nghiệm giải trí với các tài khoản Premium chất lượng cao, hình ảnh 4K, không quảng cáo.",
-        productIds: ["netflix-premium", "youtube-premium"]
+        productIds: ["netflix-premium", "youtube-premium", "locket-gold"]
     },
     "cong-cu-ai": {
         title: "Công cụ AI thông minh",
         description: "Tổng hợp các trợ lý trí tuệ nhân tạo (AI) hàng đầu thế giới.",
-        productIds: ["chatgpt-plus", "gemini-pro"]
+        productIds: ["chatgpt-plus", "gemini-pro", "google-veo3-ai", "super-grok-ai"]
     },
     "sang-tao-noi-dung": {
         title: "Thiết kế & Đồ họa",
         description: "Công cụ hỗ trợ thiết kế, biên tập video và sáng tạo nội dung chuyên nghiệp.",
-        productIds: ["capcut-pro", "canva-pro"]
+        productIds: ["capcut-pro", "canva-pro", "adobe-full-apps", "meitu-svip-1"]
     },
     "lam-viec-van-phong": {
         title: "Làm việc & Văn phòng",
         description: "Tối ưu hóa hiệu suất làm việc với bộ công cụ văn phòng và quản lý dự án hàng đầu.",
-        productIds: []
+        productIds: ["microsoft-office-365"]
     },
     "hoc-tap-nghien-cuu": {
         title: "Học tập & Nghiên cứu",
@@ -27,7 +27,7 @@ export const categoryMap: Record<string, { title: string; productIds: string[]; 
     "kinh-doanh-marketing": {
         title: "Kinh doanh & Marketing",
         description: "Giải pháp hỗ trợ quảng cáo và tiếp thị kỹ thuật số hiệu quả.",
-        productIds: []
+        productIds: ["nhom-zalo-1000-mem-2"]
     },
     "mxh": {
         title: "Tăng tương tác MXH",
@@ -37,23 +37,25 @@ export const categoryMap: Record<string, { title: string; productIds: string[]; 
             "facebook-followers",
             "instagram-followers",
             "youtube-subscribers",
-            "google-maps-review",
             "threads-followers",
             "shopee-services",
-            "spotify-services",
-            "website-traffic-services",
-            "twitter-services"
+            "tiktok-live-gio-hang-aff"
         ]
     },
     "phan-mem": {
         title: "Phần mềm & Bảo mật",
-        description: "Cung cấp key bản quyền phần mềm chính hãng, bảo mật và ổn định.",
-        productIds: []
+        description: "Bảo vệ thiết bị và dữ liệu cá nhân với các phần mềm diệt virus và VPN.",
+        productIds: ["san-pham-1772117152647", "san-pham-1772117284210", "key-windows-pro-2"]
     },
     "dich-vu-ban-chay": {
         title: "Dịch vụ bán chạy",
         description: "Những sản phẩm và dịch vụ được khách hàng tin dùng và lựa chọn nhiều nhất.",
         productIds: ["netflix-premium", "chatgpt-plus", "youtube-premium", "canva-pro"]
+    },
+    "khac": {
+        title: "Sản phẩm khác",
+        description: "Các sản phẩm, dịch vụ và tài khoản tiện ích khác.",
+        productIds: []
     }
 };
 

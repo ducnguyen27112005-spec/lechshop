@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
-import { getProductBySlug, fetchProductsConfig } from "@/lib/product-config";
+import { getProductBySlug, fetchProductsConfig, fetchPriceMultipliers } from "@/lib/product-config";
 import ProductDetailView, { ProductData } from "./ProductDetailView";
 import { Loader2 } from "lucide-react";
 
@@ -16,8 +16,8 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
     const [isNotFound, setIsNotFound] = useState(false);
 
     useEffect(() => {
-        fetchProductsConfig().then(() => {
-            const config = getProductBySlug(slug);
+        Promise.all([fetchProductsConfig(), fetchPriceMultipliers()]).then(() => {
+            const config = getProductBySlug(slug, true);
 
             if (config) {
                 const mappedProduct: ProductData = {

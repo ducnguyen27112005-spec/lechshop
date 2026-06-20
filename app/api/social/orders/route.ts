@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth"; // Assuming you have next-auth
 // import { authOptions } from "@/lib/auth"; // Adjust path if needed
+import { readMultipliersFromDisk } from "@/lib/price-multipliers-storage";
 
 function generateOrderCode() {
     const timestamp = Date.now().toString().slice(-6);
@@ -32,57 +33,102 @@ export async function POST(req: Request) {
             include: { plans: true }
         });
 
-        if (!service) {
-            return new NextResponse("Service not found", { status: 404 });
-        }
-
-        // 2. Calculate Price (if plan selected)
-        let selectedPlan = null;
         let unitPrice = 0;
         let totalPrice = 0;
-
+        let serviceName = "";
+        let platformSlug = "unknown";
         const linkCount = targetUrl ? targetUrl.split('\n').filter((line: string) => line.trim()).length : 1;
 
-        if (selectedPlanCode) {
-            selectedPlan = service.plans.find(p => p.code === selectedPlanCode);
-            if (selectedPlan) {
-                unitPrice = selectedPlan.pricePerUnit;
-                totalPrice = unitPrice * (quantity || 0) * linkCount;
+        if (service) {
+            serviceName = service.title;
+            const category = await prisma.socialCategory.findFirst({
+                where: { services: { some: { id: service.id } } }
+            });
+            if (category) platformSlug = category.slug;
+
+            if (selectedPlanCode) {
+                const selectedPlan = service.plans.find(p => p.code === selectedPlanCode);
+                if (selectedPlan) {
+                    unitPrice = selectedPlan.pricePerUnit;
+                    totalPrice = unitPrice * (quantity || 0) * linkCount;
+                }
             }
+        } else {
+            // Fallback to Thatim API if service not in DB
+            const apiKey = process.env.THATIM_API_KEY || "OhIyzlL01GrKyyKzHBMsiXtgNbCvgt";
+            const res = await fetch("https://thatim.vn/api/v2", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `key=${apiKey}&action=services`,
+                cache: "no-store"
+            });
+            
+            if (!res.ok) {
+                return new NextResponse("Service not found", { status: 404 });
+            }
+            
+            const apiServices = await res.json();
+            if (!Array.isArray(apiServices)) {
+                return new NextResponse("Service not found", { status: 404 });
+            }
+
+            const apiService = apiServices.find((s: any) => s.service.toString() === selectedPlanCode);
+            if (!apiService) {
+                return new NextResponse("Service not found", { status: 404 });
+            }
+
+            serviceName = apiService.name;
+            platformSlug = apiService.platform?.toLowerCase() || "unknown";
+            
+            // Auto-create category to satisfy Prisma Foreign Key constraints
+            let dbCategory = await prisma.socialCategory.findUnique({ where: { slug: platformSlug } });
+            if (!dbCategory) {
+                dbCategory = await prisma.socialCategory.create({
+                    data: {
+                        name: platformSlug.toUpperCase(),
+                        slug: platformSlug,
+                    }
+                });
+            }
+
+            const multipliers = readMultipliersFromDisk();
+            let pct = multipliers.categoryModifiers[platformSlug];
+            if (pct === undefined) {
+                pct = multipliers.thatimGlobalPercent ?? 0;
+            }
+            const multiplierFactor = 1 + (pct / 100);
+            
+            const rate = parseFloat(apiService.rate) || 0;
+            unitPrice = Number((((rate * 26000) / 1000) * multiplierFactor).toFixed(2));
+            totalPrice = unitPrice * (quantity || 0) * linkCount;
+
+            await prisma.socialService.create({
+                data: {
+                    categoryId: dbCategory.id,
+                    title: serviceName,
+                    slug: serviceSlug,
+                    targetType: "link",
+                    unitLabel: "lượt",
+                }
+            });
         }
 
         // 3. Create Order
         const newOrder = await prisma.socialOrder.create({
             data: {
                 code: generateOrderCode(),
-                serviceSlug: service.slug,
-                serviceName: service.title,
-                platformSlug: "unknown", // Ideally fetch from service -> category
-                // We should probably include category relation or fetch it to store platform slug correctly
-                // Let's re-fetch with category
-                // For now, quick fix:
+                serviceSlug: serviceSlug,
+                serviceName: serviceName,
+                platformSlug: platformSlug,
                 targetUrl,
                 quantity: quantity || 0,
                 selectedPlanCode,
                 unitPrice: unitPrice || null,
                 totalPrice: totalPrice || null,
                 customerNote,
-                status: "received",
-                // userId, 
+                status: "new",
             }
         });
-
-        // 4. Update Platform Slug (better way: fetch via relation)
-        // Since we didn't include category in first fetch, let's do a quick update or improved flow.
-        const category = await prisma.socialCategory.findFirst({
-            where: { services: { some: { id: service.id } } }
-        });
-        if (category) {
-            await prisma.socialOrder.update({
-                where: { id: newOrder.id },
-                data: { platformSlug: category.slug }
-            });
-        }
 
         return NextResponse.json(newOrder);
 

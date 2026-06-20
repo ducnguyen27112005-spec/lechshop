@@ -1,0 +1,9 @@
+[
+    {
+        "id": "1",
+        "username": "admin",
+        "password": "hashed_password_here",
+        "name": "Administrator",
+        "role": "ADMIN"
+    }
+]

@@ -24,7 +24,7 @@ import Link from "next/link";
 
 const categories = [
     { name: "Giải trí cao cấp", icon: Gamepad2, href: "/danh-muc/giai-tri" },
-    { name: "Công cụ AI thông minh", icon: Bot, href: "/danh-muc/cong-cu-ai" },
+    { name: "Công cụ AI", icon: Bot, href: "/danh-muc/cong-cu-ai" },
     { name: "Thiết kế & Đồ họa", icon: Palette, href: "/danh-muc/sang-tao-noi-dung" },
     { name: "Làm việc & Văn phòng", icon: Briefcase, href: "/danh-muc/lam-viec-van-phong" },
     { name: "Học tập & Nghiên cứu", icon: GraduationCap, href: "/danh-muc/hoc-tap-nghien-cuu" },
@@ -42,10 +42,10 @@ export default function CategoryMenu() {
                     <li key={index} className="group">
                         <Link
                             href={item.href}
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-600 transition-all duration-200"
+                            className="flex items-center gap-2.5 px-3 py-2.5 text-[13.5px] text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-600 transition-all duration-200"
                         >
                             <item.icon className="w-[18px] h-[18px] text-gray-400 group-hover:text-blue-500 transition-colors duration-200 shrink-0" />
-                            <span className="font-medium truncate">{item.name}</span>
+                            <span className="font-medium whitespace-normal leading-snug line-clamp-2">{item.name}</span>
                         </Link>
                     </li>
                 ))}

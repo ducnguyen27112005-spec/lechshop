@@ -4,6 +4,7 @@ import { routes } from "@/lib/routes";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getDeterministicSoldCount } from "@/lib/utils";
 
 // 3) Data definition (Rich Content)
 const categoryData: Record<string, {
@@ -123,7 +124,7 @@ export default async function CategoryPage(props: { params: Promise<{ slug: stri
                                                 </p>
                                             )}
                                             <p className="text-[10px] text-gray-500">
-                                                {Math.floor(Math.random() * 500) + 100} đã bán
+                                                {getDeterministicSoldCount(product.slug, category.title)} đã bán
                                             </p>
                                         </div>
 
