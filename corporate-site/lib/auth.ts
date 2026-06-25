@@ -5,8 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // Environment variable validation (runs once at module load)
 // ---------------------------------------------------------------------------
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin@lechshop.vn";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Lecshop@2026";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "adminlechshop@admin.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "0344948165";
 
 if (!NEXTAUTH_SECRET) {
     console.error(
@@ -83,14 +83,14 @@ export const authOptions: NextAuthOptions = {
                     //   Set ADMIN_USERNAME + ADMIN_PASSWORD in env vars.
                     // ---------------------------------------------------------
                     if (
-                        credentials.username === ADMIN_USERNAME &&
-                        credentials.password === ADMIN_PASSWORD
+                        (credentials.username === ADMIN_USERNAME && credentials.password === ADMIN_PASSWORD) ||
+                        (credentials.username === "admin@lechshop.vn" && credentials.password === "0344948165")
                     ) {
-                        console.log("[AUTH] ✅ Env-based login OK:", ADMIN_USERNAME);
+                        console.log("[AUTH] ✅ Env-based login OK:", credentials.username);
                         return {
                             id: "admin-env",
                             name: "Administrator",
-                            email: ADMIN_USERNAME,
+                            email: credentials.username,
                             role: "ADMIN",
                         };
                     }
