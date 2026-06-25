@@ -100,7 +100,8 @@ export async function fetchThatimProducts(): Promise<ThatimProduct[]> {
             const SLUG_MAP: Record<string, string> = {
                 "netflix-ultra-4k": "netflix-premium",
                 "google-gemini-pro": "gemini-pro",
-                "chatgpt-plus-codex": "chatgpt-plus"
+                "chatgpt-plus-codex": "chatgpt-plus",
+                "chatgpt-plus-api-codex": "chatgpt-plus"
             };
             
             const normalizedData = json.data.map((item: ThatimProduct) => {
