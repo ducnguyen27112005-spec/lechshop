@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next dev --webpack",
     "dev:auto": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next dev --webpack",
-    "build": "next build",
+    "build": "npx prisma db push && next build",
     "start": "next start",
     "lint": "eslint"
   },
