@@ -46,47 +46,50 @@ function getDiscountPercent(original?: string, current?: string): number | null 
 
 export default function ProductSections() {
     const [displayProducts, setDisplayProducts] = useState<CompactProduct[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Hiển thị mảng rỗng ban đầu (hoặc skeleton nếu có)
-        setDisplayProducts([]);
-
-        let apiProductsCache: CompactProduct[] = [];
-
-        const updateDisplay = () => {
-            const localProducts = getHomepageProducts();
-            if (apiProductsCache.length > 0) {
-                // API products take priority — filter out local products whose slug already exists in API
-                const apiSlugs = new Set(apiProductsCache.map(p => p.slug));
-                const uniqueLocalProducts = localProducts.filter(p => !apiSlugs.has(p.slug));
-                setDisplayProducts([...uniqueLocalProducts, ...apiProductsCache]);
-            } else {
-                setDisplayProducts(localProducts);
-            }
-        };
-
-        const loadProducts = async () => {
+        const loadData = async () => {
+            setIsLoading(true);
             try {
+                await Promise.all([fetchProductsConfig(), fetchPriceMultipliers()]);
+
                 const { fetchThatimProducts, mapThatimToCompactProducts } = await import("@/lib/api/thatim");
                 const apiProducts = await fetchThatimProducts();
                 
+                const localProducts = getHomepageProducts();
+                let apiProductsCache: CompactProduct[] = [];
+                
                 if (apiProducts && apiProducts.length > 0) {
-                    const mappedProducts = mapThatimToCompactProducts(apiProducts);
-                    apiProductsCache = mappedProducts;
-                    updateDisplay();
+                    apiProductsCache = mapThatimToCompactProducts(apiProducts);
+                }
+
+                if (apiProductsCache.length > 0) {
+                    const apiSlugs = new Set(apiProductsCache.map(p => p.slug));
+                    const uniqueLocalProducts = localProducts.filter(p => !apiSlugs.has(p.slug));
+                    setDisplayProducts([...uniqueLocalProducts, ...apiProductsCache]);
+                } else {
+                    setDisplayProducts(localProducts);
                 }
             } catch (err) {
                 console.error("Lỗi khi gọi API Thatim:", err);
+                setDisplayProducts(getHomepageProducts());
+            } finally {
+                setIsLoading(false);
             }
         };
-        
-        // Kích hoạt việc fetch — chạy song song để nhanh hơn
-        Promise.all([fetchProductsConfig(), fetchPriceMultipliers()]).then(() => {
-            updateDisplay();
-            loadProducts();
-        });
 
-        const handleUpdate = () => updateDisplay();
+        loadData();
+
+        const handleUpdate = () => {
+            // Re-fetch local products if config updates
+            setDisplayProducts(prev => {
+                const localProducts = getHomepageProducts();
+                const apiSlugs = new Set(prev.filter(p => p.originalPrice === undefined).map(p => p.slug)); // Approximate way to keep api products
+                const uniqueLocalProducts = localProducts.filter(p => !apiSlugs.has(p.slug));
+                return [...uniqueLocalProducts, ...prev.filter(p => apiSlugs.has(p.slug))];
+            });
+        };
         window.addEventListener("products-config-updated", handleUpdate);
         return () => {
             window.removeEventListener("products-config-updated", handleUpdate);
@@ -154,10 +157,27 @@ export default function ProductSections() {
 
                         {/* Product Grid */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-                            {displayProducts.map((product) => {
-                                const BadgeIcon = product.badge ? badgeIcons[product.badge] || BadgeCheck : null;
-                                const BenefitIcon = product.benefit ? benefitIcons[product.benefit] || Zap : null;
-                                const discount = getDiscountPercent(product.originalPrice, product.startingPrice);
+                            {isLoading ? (
+                                Array.from({ length: 8 }).map((_, i) => (
+                                    <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full animate-pulse">
+                                        <div className="h-[120px] sm:h-[180px] bg-gray-200" />
+                                        <div className="p-2.5 sm:p-4 flex flex-col flex-1 gap-2">
+                                            <div className="h-3 w-1/3 bg-gray-200 rounded" />
+                                            <div className="h-4 w-3/4 bg-gray-200 rounded mb-2" />
+                                            <div className="h-3 w-1/2 bg-gray-200 rounded mb-4" />
+                                            <div className="mt-auto flex flex-col gap-2">
+                                                <div className="h-5 w-1/3 bg-gray-200 rounded" />
+                                                <div className="h-3 w-1/4 bg-gray-200 rounded" />
+                                                <div className="h-10 w-full bg-gray-200 rounded mt-2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                displayProducts.map((product) => {
+                                    const BadgeIcon = product.badge ? badgeIcons[product.badge] || BadgeCheck : null;
+                                    const BenefitIcon = product.benefit ? benefitIcons[product.benefit] || Zap : null;
+                                    const discount = getDiscountPercent(product.originalPrice, product.startingPrice);
 
                                 return (
                                     <Link
@@ -256,7 +276,7 @@ export default function ProductSections() {
                                         </article>
                                     </Link>
                                 );
-                            })}
+                            }))}
                         </div>
                     </div>
 
