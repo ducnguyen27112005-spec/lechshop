@@ -36,7 +36,7 @@ export default function AdminPricesPage() {
             // 1. Load saved multipliers from server
             let savedMultipliers: any = null;
             try {
-                const mRes = await fetch("/api/admin/prices/update-multipliers");
+                const mRes = await fetch("/api/admin/prices/update-multipliers", { cache: "no-store" });
                 if (mRes.ok) {
                     savedMultipliers = await mRes.json();
                 }
@@ -175,7 +175,8 @@ export default function AdminPricesPage() {
             const res = await fetch("/api/admin/prices/update-multipliers", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                cache: "no-store"
             });
 
             if (res.ok) {

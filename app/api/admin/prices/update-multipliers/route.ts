@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 // GET: Đọc cấu hình hệ số giá hiện tại
 export async function GET() {
     try {
-        const data = readMultipliersFromDisk();
+        const data = await readMultipliersFromDisk();
         return NextResponse.json(data);
     } catch (error) {
         console.error("Failed to read price multipliers:", error);
@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const existing = readMultipliersFromDisk();
+        const existing = await readMultipliersFromDisk();
 
         const updated: PriceMultipliers = {
             productModifiers: {
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
                     : existing.thatimGlobalPercent,
         };
 
-        writeMultipliersToDisk(updated);
+        await writeMultipliersToDisk(updated);
 
         return NextResponse.json({ success: true, data: updated });
     } catch (error) {

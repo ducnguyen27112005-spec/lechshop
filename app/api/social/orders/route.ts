@@ -91,7 +91,7 @@ export async function POST(req: Request) {
                 });
             }
 
-            const multipliers = readMultipliersFromDisk();
+            const multipliers = await readMultipliersFromDisk();
             let pct = multipliers.categoryModifiers[platformSlug];
             if (pct === undefined) {
                 pct = multipliers.thatimGlobalPercent ?? 0;

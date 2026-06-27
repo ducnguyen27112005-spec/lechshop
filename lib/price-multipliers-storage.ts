@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import prisma from "@/lib/db";
 
 export interface PriceMultipliers {
     /** Hệ số % thay đổi giá theo từng sản phẩm (productId -> percent string) */
@@ -11,42 +10,42 @@ export interface PriceMultipliers {
     updatedAt?: string;
 }
 
-const DATA_FILE = path.join(process.cwd(), "data", "price-multipliers.json");
-
 export const defaultMultipliers: PriceMultipliers = {
     productModifiers: {},
     categoryModifiers: {},
     thatimGlobalPercent: 20, // mặc định 20% như hiện tại
 };
 
-export function readMultipliersFromDisk(): PriceMultipliers {
+export async function readMultipliersFromDisk(): Promise<PriceMultipliers> {
     try {
-        if (!fs.existsSync(DATA_FILE)) {
-            writeMultipliersToDisk(defaultMultipliers);
-            return defaultMultipliers;
+        const setting = await prisma.setting.findUnique({
+            where: { id: "price-multipliers" }
+        });
+        
+        if (setting && setting.socialLinks) {
+            const parsed = setting.socialLinks as unknown as PriceMultipliers;
+            return {
+                ...defaultMultipliers,
+                ...parsed,
+            };
         }
-        const raw = fs.readFileSync(DATA_FILE, "utf-8");
-        const parsed = JSON.parse(raw) as PriceMultipliers;
-        return {
-            ...defaultMultipliers,
-            ...parsed,
-        };
+        
+        // If not exists, save default and return
+        await writeMultipliersToDisk(defaultMultipliers);
+        return defaultMultipliers;
     } catch {
         return defaultMultipliers;
     }
 }
 
-export function writeMultipliersToDisk(data: PriceMultipliers): void {
+export async function writeMultipliersToDisk(data: PriceMultipliers): Promise<void> {
     try {
-        const dir = path.dirname(DATA_FILE);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-        fs.writeFileSync(
-            DATA_FILE,
-            JSON.stringify({ ...data, updatedAt: new Date().toISOString() }, null, 2),
-            "utf-8"
-        );
+        const dataToSave = { ...data, updatedAt: new Date().toISOString() };
+        await prisma.setting.upsert({
+            where: { id: "price-multipliers" },
+            update: { socialLinks: dataToSave as any },
+            create: { id: "price-multipliers", socialLinks: dataToSave as any }
+        });
     } catch (err) {
         console.error("Failed to write price multipliers:", err);
     }

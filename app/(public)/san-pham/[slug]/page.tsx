@@ -247,7 +247,7 @@ export default async function ProductPage({ params }: PageProps) {
     const { slug } = await params;
 
     const allApiCategories = await getApiSocialData();
-    const multipliers = readMultipliersFromDisk();
+    const multipliers = await readMultipliersFromDisk();
 
     // 1. Kiểm tra xem có phải là 1 nhóm dịch vụ cụ thể (vd: "Tăng lượt xem Tiktok") không?
     let foundPlatform = null;
