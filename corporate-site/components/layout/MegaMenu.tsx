@@ -62,17 +62,6 @@ const CATEGORY_DISPLAY: Record<string, {
         iconHoverBg: "group-hover:bg-emerald-600",
         linkHoverColor: "hover:text-emerald-600",
     },
-    "phan-mem": {
-        title: "Phần mềm & Bảo mật",
-        icon: Shield,
-        hoverBg: "hover:bg-purple-50",
-        hoverBorder: "hover:border-purple-100",
-        hoverText: "group-hover:text-purple-700",
-        iconBg: "bg-purple-100",
-        iconText: "text-purple-600",
-        iconHoverBg: "group-hover:bg-purple-600",
-        linkHoverColor: "hover:text-purple-600",
-    },
     "hoc-tap-nghien-cuu": {
         title: "Học tập & Nghiên cứu",
         icon: GraduationCap,

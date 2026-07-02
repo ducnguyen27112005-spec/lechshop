@@ -42,11 +42,6 @@ export const categoryMap: Record<string, { title: string; productIds: string[]; 
             "tiktok-live-gio-hang-aff"
         ]
     },
-    "phan-mem": {
-        title: "Phần mềm & Bảo mật",
-        description: "Bảo vệ thiết bị và dữ liệu cá nhân với các phần mềm diệt virus và VPN.",
-        productIds: ["san-pham-1772117152647", "san-pham-1772117284210", "key-windows-pro-2"]
-    },
     "dich-vu-ban-chay": {
         title: "Dịch vụ bán chạy",
         description: "Những sản phẩm và dịch vụ được khách hàng tin dùng và lựa chọn nhiều nhất.",

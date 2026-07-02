@@ -45,11 +45,6 @@ export const categoryMap: Record<string, { title: string; productIds: string[]; 
             "twitter-services"
         ]
     },
-    "phan-mem": {
-        title: "Phần mềm & Bảo mật",
-        description: "Cung cấp key bản quyền phần mềm chính hãng, bảo mật và ổn định.",
-        productIds: []
-    },
     "dich-vu-ban-chay": {
         title: "Dịch vụ bán chạy",
         description: "Những sản phẩm và dịch vụ được khách hàng tin dùng và lựa chọn nhiều nhất.",

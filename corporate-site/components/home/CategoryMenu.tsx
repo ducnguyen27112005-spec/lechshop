@@ -30,7 +30,7 @@ const categories = [
     { name: "Học tập & Nghiên cứu", icon: GraduationCap, href: "/danh-muc/hoc-tap-nghien-cuu" },
     { name: "Kinh doanh & Marketing", icon: LayoutTemplate, href: "/danh-muc/kinh-doanh-marketing" },
     { name: "Tăng tương tác MXH", icon: ThumbsUp, href: "/danh-muc/mxh" },
-    { name: "Phần mềm", icon: HardDrive, href: "/danh-muc/phan-mem" },
+
     { name: "Dịch vụ bán chạy", icon: Zap, href: "/danh-muc/dich-vu-ban-chay" },
 ];
 
