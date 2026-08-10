@@ -36,8 +36,25 @@ export default function ProductDetailClientLoader({ slug }: { slug: string }) {
                         if (apiProduct.time_data && apiProduct.time_data.length > 0) {
                             const validTimeData = apiProduct.time_data.filter((td) => td.is_active !== false);
 
+                            const isUnitDays = validTimeData.some(td => td.cycle > 48 || [7, 14, 84].includes(td.cycle));
+
+                            const formatCycle = (cycle: number) => {
+                                if (isUnitDays) {
+                                    if (cycle === 720) return "2 Năm";
+                                    if (cycle === 360) return "1 Năm";
+                                    if (cycle === 180) return "6 Tháng";
+                                    if (cycle === 84 || cycle === 90) return "3 Tháng";
+                                    if (cycle === 24 || cycle === 30) return "1 Tháng";
+                                    if (cycle >= 360) return `${Math.floor(cycle / 360)} Năm`;
+                                    if (cycle >= 30) return `${Math.floor(cycle / 30)} Tháng`;
+                                    return `${cycle} Ngày`;
+                                } else {
+                                    return cycle >= 12 && cycle % 12 === 0 ? `${cycle / 12} Năm` : `${cycle} Tháng`;
+                                }
+                            };
+
                             plans = validTimeData.map((td) => ({
-                                duration: td.note ? `${td.cycle} tháng ${td.note}` : `${td.cycle} tháng`,
+                                duration: td.note ? `${formatCycle(td.cycle)} - ${td.note}` : formatCycle(td.cycle),
                                 price: new Intl.NumberFormat("vi-VN").format(td.price) + "đ"
                             }));
 
@@ -48,7 +65,7 @@ export default function ProductDetailClientLoader({ slug }: { slug: string }) {
                                 }
                                 return {
                                     id: `api_plan_${td.cycle_id || td.option_id || td.cycle || i}`,
-                                    label: td.cycle >= 12 ? `${Math.floor(td.cycle / 12)} Năm` : `${td.cycle} Tháng`,
+                                    label: formatCycle(td.cycle),
                                     price: td.price,
                                     originalPrice: origPrice,
                                     description: td.note,

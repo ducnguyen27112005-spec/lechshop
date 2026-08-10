@@ -13,11 +13,13 @@ export default function FloatingContactBar() {
 
     if (!mounted) return null;
 
+    const { getMessengerLink } = require("@/lib/utils");
+
     return (
         <div className="fixed right-4 bottom-8 z-50 flex flex-col gap-6">
             {/* Messenger Button */}
             <a
-                href={config.social.facebook}
+                href={getMessengerLink(config.social.facebook)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center justify-center w-11 h-11 rounded-full bg-blue-500 text-white shadow-xl transition-transform hover:scale-110 animate-wiggle"

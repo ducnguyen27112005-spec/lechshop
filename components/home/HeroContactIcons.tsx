@@ -7,11 +7,12 @@ import React from "react";
 export default function HeroContactIcons() {
     const config = useSiteConfig();
 
+    const { getMessengerLink } = require("@/lib/utils");
     const icons = [
         {
             icon: <Facebook className="h-5 w-5" />,
             label: "Facebook",
-            href: config.social.facebook,
+            href: getMessengerLink(config.social.facebook),
         },
         {
             icon: <Phone className="h-5 w-5" />,
