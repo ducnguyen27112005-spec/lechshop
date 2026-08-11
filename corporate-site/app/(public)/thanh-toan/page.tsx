@@ -219,7 +219,7 @@ export default function CheckoutPage() {
         const orderCode = `ORD-${Date.now().toString().slice(-6)}`;
 
         try {
-            await createCustomerRequest({
+            const result = await createCustomerRequest({
                 fullName: formData.name,
                 email: formData.email,
                 contact: formData.phone,
@@ -232,6 +232,10 @@ export default function CheckoutPage() {
                 note: formData.notes + (appliedDiscount ? ` | Mã giảm giá: ${appliedDiscount.code} (-${appliedDiscount.discountPercent}%)` : ""),
                 status: "new"
             });
+
+            if (!result) {
+                throw new Error("Không thể tạo đơn hàng, vui lòng thử lại.");
+            }
 
             // Mark discount code as used after successful order
             if (appliedDiscount) {
@@ -253,7 +257,7 @@ export default function CheckoutPage() {
             }
             router.push(`/thanh-toan/thanh-cong?code=${orderCode}&amount=${finalTotal}`);
         } catch (error) {
-            alert("Có lỗi xảy ra, vui lòng thử lại!");
+            alert("Có lỗi xảy ra trong quá trình đặt hàng, vui lòng thử lại!");
             setIsSubmitting(false);
         }
     };

@@ -56,12 +56,25 @@ export async function POST(req: Request) {
         } else {
             // Fallback to Thatim API if service not in DB
             const apiKey = process.env.THATIM_API_KEY || "OhIyzlL01GrKyyKzHBMsiXtgNbCvgt";
-            const res = await fetch("https://thatim.vn/api/v2", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `key=${apiKey}&action=services`,
-                cache: "no-store"
-            });
+            
+            // Add timeout to prevent hanging requests
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
+            
+            let res;
+            try {
+                res = await fetch("https://thatim.vn/api/v2", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `key=${apiKey}&action=services`,
+                    cache: "no-store",
+                    signal: controller.signal
+                });
+            } catch (e) {
+                return new NextResponse("API Timeout or Network Error", { status: 504 });
+            } finally {
+                clearTimeout(timeoutId);
+            }
             
             if (!res.ok) {
                 return new NextResponse("Service not found", { status: 404 });
