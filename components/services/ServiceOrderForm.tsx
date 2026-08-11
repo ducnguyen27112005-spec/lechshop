@@ -90,12 +90,27 @@ export default function ServiceOrderForm({ service }: ServiceOrderFormProps) {
             setError(err);
             return;
         }
-        // Add to cart then redirect
-        handleAddToCart();
-        // Allow state update to propagate before redirect (simple timeout or just redirect)
-        setTimeout(() => {
-            window.location.href = "/cart"; // Redirect to cart or checkout
-        }, 100);
+        if (!selectedPlan) return;
+
+        const buyNowItem = {
+            id: `${service.slug}-${selectedPlan.id}-${Date.now()}`,
+            name: `${service.title} - ${selectedPlan.name}`,
+            price: totalPrice,
+            quantity: 1,
+            slug: service.slug,
+            title: service.title,
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            unitPrice: selectedPlan.pricePerUnit,
+            totalPrice: totalPrice,
+            inputValue: inputValue,
+            note: note,
+            planLabel: `SL: ${quantity} | ${selectedPlan.name}`,
+            image: service.image || "/images/social-service.jpg"
+        };
+
+        sessionStorage.setItem('buyNowItem', JSON.stringify(buyNowItem));
+        window.location.href = "/thanh-toan?buyNow=true";
     };
 
     const isContactMode = service.plans.length === 0;

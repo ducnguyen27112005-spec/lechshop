@@ -51,15 +51,17 @@ export default function ProductOrderSection({
             return;
         }
 
-        addItem({
+        const buyNowItem = {
             id: `${productSlug}-${selectedPlan.id}`,
             name: productName,
             price: selectedPlan.price,
+            quantity: 1,
             planLabel: selectedPlan.label,
             image: imageUrl || `/images/${productSlug}.jpg`,
-        });
+        };
 
-        window.location.href = "/thanh-toan";
+        sessionStorage.setItem('buyNowItem', JSON.stringify(buyNowItem));
+        window.location.href = "/thanh-toan?buyNow=true";
     };
 
     return (

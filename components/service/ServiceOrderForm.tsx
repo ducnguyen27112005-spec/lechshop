@@ -74,11 +74,34 @@ export default function ServiceOrderForm({ service }: ServiceOrderFormProps) {
     };
 
     const handleBuyNow = () => {
-        handleAddToCart();
-        if (!errorMessage) { // Only redirect if no error (imperfect check but works for now logic)
-            // Ideally handleAddToCart should return boolean
-            window.location.href = "/thanh-toan";
+        if (!selectedServer) {
+            setErrorMessage("Vui lòng chọn máy chủ (Server).");
+            return;
         }
+        if (!link) {
+            setErrorMessage("Vui lòng nhập đường dẫn (Link/ID).");
+            return;
+        }
+        if (quantity < selectedServer.min) {
+            setErrorMessage(`Số lượng tối thiểu là ${selectedServer.min}.`);
+            return;
+        }
+        if (quantity > selectedServer.max) {
+            setErrorMessage(`Số lượng tối đa là ${selectedServer.max}.`);
+            return;
+        }
+
+        const buyNowItem = {
+            id: `${service.slug}-${selectedServer.id}-${Date.now()}`,
+            name: `${service.name} - ${selectedServer.name}`,
+            price: calculateTotal(),
+            quantity: 1, // Store as 1 in cart since calculateTotal already has quantity built-in
+            planLabel: `SL: ${quantity}`,
+            image: "/images/social-service.jpg",
+        };
+
+        sessionStorage.setItem('buyNowItem', JSON.stringify(buyNowItem));
+        window.location.href = "/thanh-toan?buyNow=true";
     };
 
     return (

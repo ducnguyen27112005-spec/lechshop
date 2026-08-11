@@ -11,7 +11,32 @@ import { useRouter } from "next/navigation";
 import { useDebounceValue } from "usehooks-ts";
 
 export default function CheckoutPage() {
-    const { items, totalPrice, clearCart } = useCart();
+    const { items: cartItems, totalPrice: cartTotalPrice, clearCart } = useCart();
+    const [checkoutItems, setCheckoutItems] = useState<any[]>([]);
+    const [checkoutTotal, setCheckoutTotal] = useState(0);
+    const [isBuyNow, setIsBuyNow] = useState(false);
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const buyNow = urlParams.get('buyNow') === 'true';
+        setIsBuyNow(buyNow);
+
+        if (buyNow) {
+            const storedItem = sessionStorage.getItem('buyNowItem');
+            if (storedItem) {
+                try {
+                    const parsedItem = JSON.parse(storedItem);
+                    setCheckoutItems([parsedItem]);
+                    setCheckoutTotal(parsedItem.price * (parsedItem.quantity || 1));
+                } catch (e) {
+                    console.error("Failed to parse buyNowItem", e);
+                }
+            }
+        }
+    }, []);
+
+    const items = isBuyNow ? checkoutItems : cartItems;
+    const totalPrice = isBuyNow ? checkoutTotal : cartTotalPrice;
     const [paymentMethod, setPaymentMethod] = useState("vietqr");
 
     const [showCoupon, setShowCoupon] = useState(false);
@@ -226,7 +251,11 @@ export default function CheckoutPage() {
                 }
             }
 
-            clearCart();
+            if (isBuyNow) {
+                sessionStorage.removeItem('buyNowItem');
+            } else {
+                clearCart();
+            }
             router.push(`/thanh-toan/thanh-cong?code=${orderCode}&amount=${finalTotal}`);
         } catch (error) {
             alert("Có lỗi xảy ra, vui lòng thử lại!");
