@@ -1,22 +1,36 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SiteConfig, defaultSiteConfig, getSiteConfig } from "@/lib/site-config";
+import { SiteConfig, defaultSiteConfig } from "@/lib/site-config";
 
 export function useSiteConfig() {
     const [config, setConfig] = useState<SiteConfig>(defaultSiteConfig);
 
     useEffect(() => {
-        // Initial load
-        setConfig(getSiteConfig());
+        let mounted = true;
+        fetch('/api/site-settings')
+            .then(res => res.json())
+            .then(data => {
+                if (mounted) {
+                    setConfig(data);
+                }
+            })
+            .catch(() => {});
 
         // Listen for changes
-        const handleChange = () => {
-            setConfig(getSiteConfig());
+        const handleConfigChange = () => {
+            fetch('/api/site-settings')
+                .then(res => res.json())
+                .then(data => {
+                    if (mounted) setConfig(data);
+                });
         };
 
-        window.addEventListener("site-config-changed", handleChange);
-        return () => window.removeEventListener("site-config-changed", handleChange);
+        window.addEventListener("site-config-changed", handleConfigChange);
+        return () => {
+            mounted = false;
+            window.removeEventListener("site-config-changed", handleConfigChange);
+        };
     }, []);
 
     return config;

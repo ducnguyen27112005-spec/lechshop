@@ -21,10 +21,13 @@ export default function SiteSettingsPage() {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        // Load config from localStorage
-        const loaded = getSiteConfig();
-        setConfig(loaded);
-        setLoading(false);
+        fetch('/api/site-settings')
+            .then(res => res.json())
+            .then(data => {
+                setConfig(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
     }, []);
 
     const handleChange = (field: keyof SiteConfig, value: any) => {
@@ -38,14 +41,34 @@ export default function SiteSettingsPage() {
         }));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setSaving(true);
-        saveSiteConfig(config);
-        // Simulate API delay
-        setTimeout(() => {
-            setSaving(false);
+        try {
+            const payload = {
+                hotline: config.phone,
+                email: config.email,
+                address: config.address,
+                footerText: config.copyright,
+                socialLinks: {
+                    workingHours: config.workingHours,
+                    social: config.social,
+                    bankAccount: config.bankAccount
+                }
+            };
+            
+            await fetch('/api/admin/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            window.dispatchEvent(new Event("site-config-changed"));
             alert("Đã lưu cấu hình thành công!");
-        }, 800);
+        } catch (error) {
+            alert("Lỗi khi lưu cấu hình!");
+        } finally {
+            setSaving(false);
+        }
     };
 
     if (loading) return <div className="p-8"><Loader2 className="animate-spin" /></div>;
